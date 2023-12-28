@@ -9,4 +9,5 @@ foreach(var element in array){}
 ```
 float a = 0.5f;
 a.ToString("N6");
+//a is 0.5000000
 ```
