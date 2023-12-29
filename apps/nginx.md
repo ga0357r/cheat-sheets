@@ -89,3 +89,20 @@ server {
 	}
 }
 ```
+
+## Secure your nginx docker server
+### 
+```nginx
+server {
+    # Configuration for port 443. For https
+    listen 443 ssl;
+    server_name localhost;
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+    root /code;
+
+    ssl_certificate /etc/nginx/certs/localhost.csr;
+    ssl_certificate_key /etc/nginx/certs/localhost.key;
+}
+}
+```
