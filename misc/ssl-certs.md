@@ -31,7 +31,7 @@ openssl req -new -sha256 -subj "/CN=localhost" -key localhost.key -out localhost
 ```
 3. Create a `extfile` with all the alternative names. Manually Create it to prevent errors when reading extfile.ext. Manually type it so encoding does not change(UTF 8 is the correct encoding).
 ```
-subjectAltName=DNS:localhost
+subjectAltName = DNS:localhost
 ```
 
 ```
