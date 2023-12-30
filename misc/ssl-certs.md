@@ -39,6 +39,7 @@ subjectAltName = DNS:localhost
 extendedKeyUsage = serverAuth
 ```
 
+```
 # optional
 keyUsage = digitalSignature
 ```
