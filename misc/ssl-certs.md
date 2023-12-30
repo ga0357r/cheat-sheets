@@ -3,8 +3,8 @@
 X.509 is an ITU standard defining the format of public key certificates. X.509 are used in TLS/SSL, which is the basis for HTTPS. An X.509 certificate binds an identity to a public key using a digital signature. A certificate contains an identity (hostname, organization, etc.) and a public key (RSA, DSA, ECDSA, ed25519, etc.), and is either signed by a Certificate Authority or is Self-Signed.
 
 ## Self-Signed Certificates
-
-### Generate CA
+### Way 1
+#### Generate CA
 1. Generate RSA Key
 ```bash
 openssl genrsa -aes256 -out ca-key.pem 4096
@@ -14,13 +14,13 @@ openssl genrsa -aes256 -out ca-key.pem 4096
 openssl req -new -x509 -sha256 -days 3650 -key ca-key.pem -out ca.pem
 ```
 
-### Optional Stage: View Certificate's Content
+#### Optional Stage: View Certificate's Content
 ```bash
 openssl x509 -in ca.pem -text
 openssl x509 -in ca.pem -purpose -noout -text
 ```
 
-### Generate Certificate
+#### Generate Certificate
 1. Create a RSA key
 ```bash
 openssl genrsa -out localhost.key 4096
@@ -64,6 +64,45 @@ cat localhost.crt > localhost-full-chain-cert.crt
 ```bash
 cat ca.pem >> .\localhost-full-chain-cert.crt
 ```
+### Way 2
+#### Ext file setup
+1. create a new file named extfile.ext and put the code inside
+```
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+
+[req_distinguished_name]
+countryName = Country Name (2 letter code)
+countryName_default = US
+stateOrProvinceName = State or Province Name (full name)
+stateOrProvinceName_default = YourState
+localityName = Locality Name (e.g., city)
+localityName_default = YourCity
+organizationName = Organization Name (e.g., company)
+organizationName_default = YourOrganization
+commonName = Common Name (e.g., your domain or localhost)
+commonName_max = 64
+
+[v3_req]
+subjectAltName = @alt_names
+extendedKeyUsage = serverAuth
+keyUsage = digitalSignature
+
+[alt_names]
+DNS.1 = localhost
+```
+
+#### Generate ssl certificate and Key 
+1. Generate ssl certificate and key
+```bash
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout nginx-selfsigned.key -out nginx-selfsigned.crt -config extfile.ext
+```
+2. Generate a strong Diffie-Hellman group
+```bash
+openssl dhparam -out dhparam.pem 4096
+```
+
+https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-on-debian-10#creating-a-configuration-snippet-pointing-to-the-ssl-key-and-certificate
 
 ## Certificate Formats
 
