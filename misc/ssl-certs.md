@@ -23,33 +23,38 @@ openssl x509 -in ca.pem -purpose -noout -text
 ### Generate Certificate
 1. Create a RSA key
 ```bash
-openssl genrsa -out cert-key.pem 4096
+openssl genrsa -out localhost.key 4096
 ```
 2. Create a Certificate Signing Request (CSR)
 ```bash
-openssl req -new -sha256 -subj "/CN=yourcn" -key cert-key.pem -out cert.csr
+openssl req -new -sha256 -subj "/CN=localhost" -key localhost.key -out localhost.csr
 ```
 3. Create a `extfile` with all the alternative names. Manually Create it to prevent errors when reading extfile.ext. Manually type it so encoding does not change(UTF 8 is the correct encoding).
 ```
-subjectAltName=DNS:your-dns.record,IP:257.10.10.1
+subjectAltName=DNS:localhost
 ```
 
 ```
 # optional
 extendedKeyUsage = serverAuth
 ```
+
+# optional
+keyUsage = digitalSignature
+```
+
 4. Create the certificate
 ```bash
-openssl x509 -req -sha256 -days 365 -in cert.csr -CA ca.pem -CAkey ca-key.pem -out cert.pem -extfile extfile.ext -CAcreateserial
+openssl x509 -req -sha256 -days 3650 -in localhost.csr -CA ca.pem -CAkey ca-key.pem -out localhost.crt -extfile extfile.ext -CAcreateserial
 ```
 
 5. Upload a full chain certificate
 ```bash
-cat cert.pem > fullchain.pem
+cat localhost.crt > localhost-full-chain-cert.crt
 ```
 
 ```bash
-cat ca.pem >> .\fullchain.pem
+cat ca.pem >> .\localhost-full-chain-cert.crt
 ```
 
 ## Certificate Formats
