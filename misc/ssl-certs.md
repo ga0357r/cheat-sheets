@@ -43,9 +43,16 @@ extendedKeyUsage = serverAuth
 keyUsage = digitalSignature
 ```
 
-4. Create the certificate
+4. Create the normal certificate
 ```bash
 openssl x509 -req -sha256 -days 3650 -in localhost.csr -CA ca.pem -CAkey ca-key.pem -out localhost.crt -extfile extfile.ext -CAcreateserial
+```
+
+or
+
+Create the trusted full chain certificate and skip 5
+```bash
+openssl req -trustout -x509 -newkey rsa:4096 -sha256 -nodes -keyout localhost.key -out localhost-full-chain-cert.crt -days 3650
 ```
 
 5. Upload a full chain certificate
