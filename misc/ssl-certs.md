@@ -11,7 +11,7 @@ openssl genrsa -aes256 -out ca-key.pem 4096
 ```
 2. Generate a public CA Cert
 ```bash
-openssl req -new -x509 -sha256 -days 365 -key ca-key.pem -out ca.pem
+openssl req -new -x509 -sha256 -days 3650 -key ca-key.pem -out ca.pem
 ```
 
 ### Optional Stage: View Certificate's Content
