@@ -33,28 +33,9 @@ openssl req -new -sha256 -subj "/CN=localhost" -key nginx-selfsigned.key -out ng
 
 create a new file named extfile.ext and put the code inside
 ```
-distinguished_name = req_distinguished_name
-req_extensions = v3_req
-
-[req_distinguished_name]
-countryName = Country Name (2 letter code)
-countryName_default = US
-stateOrProvinceName = State or Province Name (full name)
-stateOrProvinceName_default = YourState
-localityName = Locality Name (e.g., city)
-localityName_default = YourCity
-organizationName = Organization Name (e.g., company)
-organizationName_default = YourOrganization
-commonName = Common Name (e.g., your domain or localhost)
-commonName_max = 64
-
-[v3_req]
-subjectAltName = @alt_names
+subjectAltName = DNS:localhost
 extendedKeyUsage = serverAuth
 keyUsage = digitalSignature
-
-[alt_names]
-DNS.1 = localhost
 ```
 
 
