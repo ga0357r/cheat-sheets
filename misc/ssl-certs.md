@@ -23,7 +23,7 @@ openssl x509 -in ca.pem -purpose -noout -text
 #### Generate Certificate
 1. Create a RSA key
 ```bash
-openssl genrsa -out nginx-selfsigned.key 4096
+openssl genrsa -out nginx-selfsigned-key.pem 4096
 ```
 2. Create a Certificate Signing Request (CSR)
 ```bash
@@ -41,16 +41,16 @@ keyUsage = digitalSignature
 
 4. Create the normal certificate
 ```bash
-openssl x509 -req -sha256 -days 3650 -in nginx-selfsigned.csr -CA ca.pem -CAkey ca-key.pem -out nginx-selfsigned.crt -extfile extfile.ext -CAcreateserial
+openssl x509 -req -sha256 -days 3650 -in nginx-selfsigned.csr -CA ca.pem -CAkey ca-key.pem -out nginx-selfsigned-crt.pem -extfile extfile.ext -CAcreateserial
 ```
 
 5. Upload a full chain certificate
 ```bash
-cat nginx-selfsigned.crt > nginx-selfsigned-fullchain.crt
+cat nginx-selfsigned-crt.pem > nginx-selfsigned-fullchain.pem
 ```
 
 ```bash
-cat ca.pem >> .\nginx-selfsigned-fullchain.crt
+cat ca.pem >> .\nginx-selfsigned-fullchain.pem
 ```
 
 6. Generate a strong Diffie-Hellman group
