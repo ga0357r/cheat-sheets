@@ -30,19 +30,33 @@ openssl genrsa -out localhost.key 4096
 openssl req -new -sha256 -subj "/CN=localhost" -key localhost.key -out localhost.csr
 ```
 3. Create a `extfile` with all the alternative names. Manually Create it to prevent errors when reading extfile.ext. Manually type it so encoding does not change(UTF 8 is the correct encoding).
-```
-subjectAltName = DNS:localhost
-```
 
+create a new file named extfile.ext and put the code inside
 ```
-# optional
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+
+[req_distinguished_name]
+countryName = Country Name (2 letter code)
+countryName_default = US
+stateOrProvinceName = State or Province Name (full name)
+stateOrProvinceName_default = YourState
+localityName = Locality Name (e.g., city)
+localityName_default = YourCity
+organizationName = Organization Name (e.g., company)
+organizationName_default = YourOrganization
+commonName = Common Name (e.g., your domain or localhost)
+commonName_max = 64
+
+[v3_req]
+subjectAltName = @alt_names
 extendedKeyUsage = serverAuth
+keyUsage = digitalSignature
+
+[alt_names]
+DNS.1 = localhost
 ```
 
-```
-# optional
-keyUsage = digitalSignature
-```
 
 4. Create the normal certificate
 ```bash
@@ -57,6 +71,12 @@ cat localhost.crt > localhost-full-chain-cert.crt
 ```bash
 cat ca.pem >> .\localhost-full-chain-cert.crt
 ```
+
+6. Generate a strong Diffie-Hellman group
+```bash
+openssl dhparam -out dhparam.pem 4096
+```
+
 ### Way 2
 #### Ext file setup
 1. create a new file named extfile.ext and put the code inside
