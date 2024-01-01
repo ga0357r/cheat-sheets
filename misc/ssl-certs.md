@@ -46,11 +46,11 @@ openssl x509 -req -sha256 -days 3650 -in nginx-selfsigned.csr -CA ca.pem -CAkey 
 
 5. Upload a full chain certificate
 ```bash
-cat nginx-selfsigned-crt.pem > nginx-selfsigned-fullchain.pem
+cat nginx-selfsigned-crt.pem > nginx-selfsigned-fullchain-crt.pem
 ```
 
 ```bash
-cat ca.pem >> .\nginx-selfsigned-fullchain.pem
+cat ca.pem >> .\nginx-selfsigned-fullchain-crt.pem
 ```
 
 6. Generate a strong Diffie-Hellman group
