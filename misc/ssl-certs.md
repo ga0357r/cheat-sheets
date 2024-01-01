@@ -27,7 +27,7 @@ openssl genrsa -out nginx-selfsigned-key.pem 4096
 ```
 2. Create a Certificate Signing Request (CSR)
 ```bash
-openssl req -new -sha256 -subj "/CN=localhost" -key nginx-selfsigned.key -out nginx-selfsigned.csr
+openssl req -new -sha256 -subj "/CN=localhost" -key nginx-selfsigned-key.pem -out nginx-selfsigned.csr
 ```
 3. Create a `extfile` with all the alternative names. Manually Create it to prevent errors when reading extfile.ext. Manually type it so encoding does not change(UTF 8 is the correct encoding).
 
