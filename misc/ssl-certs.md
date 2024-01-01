@@ -57,7 +57,7 @@ cat ca.pem >> .\nginx-selfsigned-fullchain-crt.pem
 ```bash
 openssl dhparam -out dhparam.pem 4096
 ```
-
+make sure the full chain and certificate is in the utf8 format
 ### Way 2
 #### Ext file setup
 1. create a new file named extfile.ext and put the code inside
