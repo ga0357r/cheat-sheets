@@ -35,3 +35,10 @@ List<int> numbers = new List<int>{ 4, 2, 1, 5, 3 };
 numbers.Sort();  // Sort the list in an ascending order
 numbers.Reverse(); // Reverse the order of the elements
 ```
+
+# 64 bit integer
+
+```
+ulong unsignedLong = 40; //+ve number 0 - 18446744073709551615;
+long signedLong = -40;  // +ve or -ve number -9,223,372,036,854,775,808 - 9,223,372,036,854,775,807
+```
