@@ -108,18 +108,55 @@ server {
 ```
 
 ## return status codes
-### 
 ```nginx
 server {
-    # Configuration for port 443. For https
+    # Configuration for port 80. Unity POB Client
+    listen 80;
+    server_name localhost;
+
+    location / {
+        # Redirect all HTTP requests to HTTPS(443)
+	# return 301 https://$host:443$request_uri; # Permanent Redirect
+        return 307 https://$host:443$request_uri; # Temporary redirect
+    }
+}
+```
+
+## To upgrade http to https
+```nginx
+server {
+    # Configuration for port 80. Unity POB Client
+    listen 80;
+    server_name localhost;
+
+    location / {
+        # Redirect all HTTP requests to HTTPS(443)
+        return 307 https://$host:443$request_uri;
+    }
+}
+
+server {
+    # Configuration for port 443. For https. For Unity POB Client
     listen 443 ssl;
+    listen [::]:443 ssl;
+    index index.php index.html;
     server_name localhost;
     error_log  /var/log/nginx/error.log;
     access_log /var/log/nginx/access.log;
     root /code;
 
-    ssl_certificate /etc/nginx/certs/localhost.csr;
-    ssl_certificate_key /etc/nginx/certs/localhost.key;
-}
+    include /etc/nginx/certs/self-signed.conf;
+    include /etc/nginx/certs/ssl-params.conf;
+
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass php:52379;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
 }
 ```
