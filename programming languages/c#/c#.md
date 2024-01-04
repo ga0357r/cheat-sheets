@@ -42,3 +42,16 @@ numbers.Reverse(); // Reverse the order of the elements
 ulong unsignedLong = 40; //+ve number 0 - 18446744073709551615;
 long signedLong = -40;  // +ve or -ve number -9,223,372,036,854,775,808 - 9,223,372,036,854,775,807
 ```
+
+# Split a string based on delimiter
+```
+string s = "07:05:45PM";
+var splitString = s.Split(':'); // [0] = "07", [1] = "05", [2] = "45PM"
+```
+
+# Remove a character from a
+```
+string s = "07:05:45PM";
+var splitString = s.Split(':'); // [0] = "07", [1] = "05", [2] = "45PM"
+string seconds = splitString[2].Remove(2); // Start Removing all elements from element 2. Remove "PM". Seconds = 45
+```
