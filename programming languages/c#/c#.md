@@ -55,3 +55,14 @@ string s = "07:05:45PM";
 var splitString = s.Split(':'); // [0] = "07", [1] = "05", [2] = "45PM"
 string seconds = splitString[2].Remove(2); // Start Removing all elements from element 2. Remove "PM". Seconds = 45
 ```
+
+# return a unique array element that appears once
+```
+int[] arr = { 2, 3, 4, 5, 8, 2, 3, 5, 4, 2, 3, 4, 6 };
+var q =
+    from g in arr.GroupBy(x => x)
+    where g.Count() == 1
+    select g.First();
+
+return q.FirstOrDefault();
+```
