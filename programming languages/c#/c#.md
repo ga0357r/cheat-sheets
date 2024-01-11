@@ -60,9 +60,9 @@ string seconds = splitString[2].Remove(2); // Start Removing all elements from e
 ```
 int[] arr = { 2, 3, 4, 5, 8, 2, 3, 5, 4, 2, 3, 4, 6 };
 var q =
-    from g in arr.GroupBy(x => x)
-    where g.Count() == 1
-    select g.First();
+    from g in arr.GroupBy(x => x)   //  Groups the array elements by their values, resulting in the following groups: {2, 2, 2}, {3, 3, 3}, {4, 4, 4}, {5, 5}, {8}, {6}.
+    where g.Count() == 1 //Filters out groups with more than one element, leaving only {8}, {6}.
+    select g.First(); //Selects the first (and only) element from each group, resulting in the sequence {8, 6}.
 
-return q.FirstOrDefault();
+return q.FirstOrDefault(); //Returns the first element from the sequence, which is 8.
 ```
