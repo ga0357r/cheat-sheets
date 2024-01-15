@@ -10,3 +10,10 @@ foreach ($car as $key => $value) {
   echo "$x: $y <br>";
 }
 ```
+
+# Gets environment variables
+
+```
+// Example use of getenv()
+$ip = getenv('REMOTE_ADDR');
+```
