@@ -66,3 +66,21 @@ var q =
 
 return q.FirstOrDefault(); //Returns the first element from the sequence, which is 8.
 ```
+
+# Returning an absolute value and For Loops with tweaked variables
+```
+// For Loop
+int column = arr.Count() -1;
+int output = 0;
+
+for(; column < arr[row].Count;)
+{
+    //get right-to-left diagonal
+    output += arr[row][column];
+    break;
+}
+
+//Absolute
+int result = -20
+int absoluteResult = Math.Abs(result); //20
+```
