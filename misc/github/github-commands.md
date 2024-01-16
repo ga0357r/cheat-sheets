@@ -14,3 +14,11 @@ git log
 git checkout branch-you-want-to-apply-the-cherrypick-to
 git cherry-pick commit-sha
 ```
+
+# To revert a commit on branch a
+
+```bash
+git checkout branch-a
+git log
+git revert commit-sha
+```
