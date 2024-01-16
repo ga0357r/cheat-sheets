@@ -48,3 +48,16 @@ else
 fi
 echo "Setup Complete - OS Name: $(uname -s)"
 ```
+
+# Source the .env file and return variables
+```bash
+source .env   #source the env file and return variables
+
+# Remove newline characters from DB_USER and DB_PASSWORD
+DB_USER=$(echo -n "$DB_USER" | tr -d '\n\r')
+DB_PASSWORD=$(echo -n "$DB_PASSWORD" | tr -d '\n\r')
+
+# Replace the placeholders in the SQL file
+sed -i "s|{{DB_USER}}|$DB_USER|g" src/.env.example
+sed -i "s|{{DB_PASSWORD}}|$DB_PASSWORD|g" src/.env.example
+```
