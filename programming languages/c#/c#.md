@@ -84,3 +84,14 @@ for(; column < arr[row].Count;)
 int result = -20
 int absoluteResult = Math.Abs(result); //20
 ```
+
+
+# For Loops Default
+```
+for(int i = 0; i < 10; i++){}
+```
+
+# Create a List of 100 elements called 0
+```
+List<int> result = Enumerable.Repeat(0, 100).ToList();
+```
