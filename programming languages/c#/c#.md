@@ -95,3 +95,18 @@ for(int i = 0; i < 10; i++){}
 ```
 List<int> result = Enumerable.Repeat(0, 100).ToList();
 ```
+
+# Make Sure a callback runs on Unity Main Thread
+```
+// Initialize the Google Mobile Ads SDK.
+        MobileAds.Initialize(initStatus =>
+        {
+            UniRx.MainThreadDispatcher.Post(_ =>
+            {
+                UnityAds.SetConsentMetaData("gdpr.consent", true);
+                ValidateMediationStatus(initStatus);
+                Print.GreenLog("Google Mobile Ads Initialization Success");
+                AdManager.Instance.LoadAd();
+            }, null);
+        });
+```
