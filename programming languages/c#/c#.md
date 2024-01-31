@@ -117,7 +117,7 @@ List<int> result = Enumerable.Repeat(0, 100).ToList();
 var lineData = Console.ReadLine(); 
 ```
 
-# To convert a string of numbers separated by Space to a List<int> data from the console
+# To convert a string of numbers separated by space to a List
 ```
 //Make sure to use System.Linq; using System.Linq;
 // read data from a line in console
