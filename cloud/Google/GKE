@@ -1,0 +1,17 @@
+# Google Kubernetes Engine(GKE)?
+(GKE) is a service that allows you to use managed Kubernetes clusters for deploying and managing the operation of containerized applications on Google Cloud's infrastructure.
+
+## GKE Cluster Architecture
+When a GKE cluster is created, two types of components are automatically built: control plane (master node) and nodes (worker nodes).
+
+### control plane (master node)
+The control plane for a GKE cluster is created within a managed VPC in Google Cloud, and there is no burden on users to build or operate it.
+
+### nodes (worker nodes)
+A cluster contains one or more nodes that run workloads.
+In a GKE cluster, nodes are configured by Compute Engine instances and are automatically created during cluster creation.
+Auto-healing is enabled by default on nodes and performs periodic health checks on each node in the cluster.
+
+https://blog.g-gen.co.jp/entry/gke-ingress-using-google-managed-ssl-cert#GKE-クラスタの準備
+https://blog.g-gen.co.jp/entry/gke-explained#Google-Kubernetes-Engine-とは
+https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs
