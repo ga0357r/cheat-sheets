@@ -1,4 +1,4 @@
-# Google Kubernetes Engine(GKE)?
+# Google Kubernetes Engine(GKE)
 (GKE) is a service that allows you to use managed Kubernetes clusters for deploying and managing the operation of containerized applications on Google Cloud's infrastructure.
 
 ## GKE Cluster Architecture
@@ -15,3 +15,12 @@ Auto-healing is enabled by default on nodes and performs periodic health checks 
 https://blog.g-gen.co.jp/entry/gke-ingress-using-google-managed-ssl-cert#GKE-クラスタの準備
 https://blog.g-gen.co.jp/entry/gke-explained#Google-Kubernetes-Engine-とは
 https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs
+
+## Ingress
+Ingress is a Kubernetes API resource that provides L7 load balancing for workloads within a Kubernetes cluster.
+
+## Use cases for GKE
+- AI and ML operations
+- Data processing at scale
+- Scalable online games platforms
+- Reliable applications under heavy load
