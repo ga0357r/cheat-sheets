@@ -124,3 +124,10 @@ var lineData = Console.ReadLine();
 string array = Console.ReadLine(); //1 2 3 4 5 6 7
 List<int> arrList = array.Split(' ').Select(int.Parse).ToList(); 
 ```
+
+# To check the modulus
+```
+int m = 12
+int n = 2
+if(m % n == 0) return true;
+```
