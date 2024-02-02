@@ -17,7 +17,9 @@ In a GKE cluster, nodes are configured by Compute Engine instances and are autom
 Auto-healing is enabled by default on nodes and performs periodic health checks on each node in the cluster.
 
 https://blog.g-gen.co.jp/entry/gke-ingress-using-google-managed-ssl-cert#GKE-クラスタの準備
+
 https://blog.g-gen.co.jp/entry/gke-explained#Google-Kubernetes-Engine-とは
+
 https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs
 
 ## Ingress
@@ -59,7 +61,8 @@ You can expose your application by creating a Service, a Kubernetes resource tha
 ``` kubectl expose deployment hello-server \
     --type LoadBalancer \
     --port 80 \
-    --target-port 8080 ```
+    --target-port 8080
+```
 
 N.B : A load balancer distributes user traffic across multiple instances of your applications
 
