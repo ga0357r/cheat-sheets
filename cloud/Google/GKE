@@ -32,7 +32,7 @@ Ingress is a Kubernetes API resource that provides L7 load balancing for workloa
 ## Get Started with GKE
 ### Before you begin
 1) Create a Google cloud account
-2) Create a Google cloud project
+2) Create a Google cloud project by going to "Manage Resources > Create New Project"
 3) Make sure billing is enabled for google cloud project.
 4) Enabled artifact registry and kubernetes and kubernetes engine api
 
@@ -67,4 +67,10 @@ N.B : A load balancer distributes user traffic across multiple instances of your
 1) Inspect the running Pods ``` kubectl get pods ```
 2) Inspect the hello-server Service ``` kubectl get service hello-server ```
 3) View the application from your web browser by using the external IP address with the exposed port ``` http://EXTERNAL_IP ```
+
+### Clean up
+To avoid incurring charges to your Google Cloud account for the resources used which are no longer being used
+1) Delete the application's Service ``` kubectl delete service hello-server ```
+2) Delete your cluster ``` gcloud container clusters delete hello-cluster \
+    --location us-central1 ```
 
