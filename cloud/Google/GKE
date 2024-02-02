@@ -1,6 +1,10 @@
 # Google Kubernetes Engine(GKE)
 (GKE) is a service that allows you to use managed Kubernetes clusters for deploying and managing the operation of containerized applications on Google Cloud's infrastructure.
 
+A GKE environment consists of VMs grouped together to form a cluster. Apps are packaged into containers and the kubernetes API is used to interact with the app.
+
+It is recommended to run GKE in autopilot mode so the control plane and worker nodes are automatically managed
+
 ## GKE Cluster Architecture
 When a GKE cluster is created, two types of components are automatically built: control plane (master node) and nodes (worker nodes).
 
@@ -24,3 +28,16 @@ Ingress is a Kubernetes API resource that provides L7 load balancing for workloa
 - Data processing at scale
 - Scalable online games platforms
 - Reliable applications under heavy load
+
+## Get Started with GKE
+### Before you begin
+1) Create a Google cloud account
+2) Create a Google cloud project
+3) Make sure billing is enabled for google cloud project.
+4) Enabled artifact registry and kubernetes and kubernetes engine api
+
+### Launch Cloud Shell
+1) Go to Google Cloud Console
+2) Click activate Cloud Shell Button on the upper right corner of the console.
+3) Set default project in Google cloud CLI with "gcloud config set project PROJECT_ID "
+
