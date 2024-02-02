@@ -58,10 +58,11 @@ A cluster consist of a control node and a worker node. You deploy applications t
 2) Expose the Deployment - After deploying the application, you need to expose it to the internet so that users can access it.
 You can expose your application by creating a Service, a Kubernetes resource that exposes your application to external traffic.
 
-``` kubectl expose deployment hello-server \
-    --type LoadBalancer \
-    --port 80 \
-    --target-port 8080
+```
+kubectl expose deployment hello-server \
+--type LoadBalancer \
+--port 80 \
+--target-port 8080
 ```
 
 N.B : A load balancer distributes user traffic across multiple instances of your applications
