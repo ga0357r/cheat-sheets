@@ -131,3 +131,33 @@ int m = 12
 int n = 2
 if(m % n == 0) return true;
 ```
+
+# To keep an index within the bounds of a list size
+```
+public static int flippingMatrix(List<List<int>> matrix)
+    {
+        int matrixCount = matrix.Count();
+        int sum = 0;
+        List<int> elements = new List<int>();
+        
+        for(int i = 0; i < matrixCount / 2; i++)
+        {
+            for(int j = 0; j < matrixCount / 2; j++)
+            {
+                elements.Clear();
+                
+                elements = new List<int> 
+                {
+                    matrix[i][j],
+                    matrix[i][matrixCount - j - 1],
+                    matrix[matrixCount - i - 1][j],
+                    matrix[matrixCount - i - 1][matrixCount - j - 1]
+                };
+                
+                sum += elements.Max();
+            }    
+        }
+        
+        return sum;
+    }
+```
