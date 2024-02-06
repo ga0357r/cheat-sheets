@@ -171,3 +171,14 @@ private static int ChooseIndexToRemove(int start, int end, string s)
     return start;
 }
 ```
+
+# To Convert a string array to a string datatype 
+```
+private static int ChooseIndexToRemove(int start, int end, string s)
+{
+    var charToRemove = s[start];
+    s = s.Replace(charToRemove.ToString(), string.Empty);
+    string reversedString = new string(s.Reverse().ToArray())
+    return start;
+}
+```
