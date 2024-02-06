@@ -161,3 +161,13 @@ public static int flippingMatrix(List<List<int>> matrix)
         return sum;
     }
 ```
+
+# To Replace a character in a string 
+```
+private static int ChooseIndexToRemove(int start, int end, string s)
+{
+    var charToRemove = s[start];
+    s = s.Replace(charToRemove.ToString(), string.Empty);
+    return start;
+}
+```
