@@ -78,3 +78,9 @@ To avoid incurring charges to your Google Cloud account for the resources used w
 2) Delete your cluster ``` gcloud container clusters delete hello-cluster \
     --location us-central1 ```
 
+## GCP Code Cheat Sheet
+### Delete your cluster 
+``` 
+gcloud container clusters delete hello-cluster \
+--location us-central1 
+```
