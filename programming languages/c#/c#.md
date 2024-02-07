@@ -178,7 +178,7 @@ private static int ChooseIndexToRemove(int start, int end, string s)
 {
     var charToRemove = s[start];
     s = s.Replace(charToRemove.ToString(), string.Empty);
-    string reversedString = new string(s.Reverse().ToArray())
+    string reversedString = new string(s.Reverse().ToArray()); //Reversing a string is an expensive process. Beware
     return start;
 }
 ```
