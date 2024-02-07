@@ -93,3 +93,24 @@ gcloud compute addresses create <addressName> --global
 # Check the assigned IP address
 gcloud compute addresses describe <addressName> --global
 ```
+
+### Get all managed zones 
+```
+gcloud dns managed-zones list
+```
+
+### Register a record
+```
+# Start Transaction
+gcloud dns record-sets transaction start --zone=<zoneName>
+
+# Register A record
+gcloud dns record-sets transaction add <staticIpAdress> \
+   --name=<domainName e.g example.com> \
+   --ttl=300 \
+   --type=A \
+   --zone=<zoneName>
+
+# End transaction
+gcloud dns record-sets transaction execute --zone=<zoneName>
+```
