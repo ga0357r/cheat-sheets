@@ -91,5 +91,5 @@ gcloud container clusters delete <clusterName> \
 gcloud compute addresses create <addressName> --global
 
 # Check the assigned IP address
-gcloud compute addresses describe hello-app-address --global
+gcloud compute addresses describe <addressName> --global
 ```
