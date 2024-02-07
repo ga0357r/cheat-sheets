@@ -7,6 +7,26 @@ kubectl apply -f <deploymentName.yaml>
 ```
 
 ### Stop running a workload in cluster 
-``` 
-kubectl scale --replicas=0 deployment/<deploymentname.yaml>
+```
+// deployments
+kubectl scale --replicas=0 deployment/<deploymentName.yaml>
+kubectl delete deployment <deploymentName>
+
+// services
+kubectl delete service <deploymentName>
+
+//ingress
+kubectl delete ingress <deploymentName>
+```
+
+### Get Workloads in a cluster 
+```
+//deployments
+kubectl get deployments <deploymentName>
+
+// services
+kubectl get services <deploymentName>
+
+//ingress
+kubectl get ingresses <deploymentName>
 ```
