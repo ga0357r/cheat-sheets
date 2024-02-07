@@ -101,10 +101,10 @@ gcloud dns managed-zones list
 
 ### Register a record
 ```
-# Start Transaction
+# Start transaction
 gcloud dns record-sets transaction start --zone=<zoneName>
 
-# Register A record
+# Register a record
 gcloud dns record-sets transaction add <staticIpAdress> \
    --name=<domainName e.g example.com> \
    --ttl=300 \
@@ -113,4 +113,13 @@ gcloud dns record-sets transaction add <staticIpAdress> \
 
 # End transaction
 gcloud dns record-sets transaction execute --zone=<zoneName>
+```
+
+### Abort a transaction
+```
+# Start transaction
+gcloud dns record-sets transaction start --zone=<zoneName>
+
+# Abort transaction
+gcloud dns record-sets transaction abort --zone=<zoneName>
 ```
