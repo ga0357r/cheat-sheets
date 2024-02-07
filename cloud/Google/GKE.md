@@ -81,6 +81,15 @@ To avoid incurring charges to your Google Cloud account for the resources used w
 ## GCP Code Cheat Sheet
 ### Delete your cluster 
 ``` 
-gcloud container clusters delete hello-cluster \
---location us-central1 
+gcloud container clusters delete <clusterName> \
+<clusterLocation>
+```
+
+### Assign a static IP address 
+```
+# Assign the static IP address
+gcloud compute addresses create <addressName> --global
+
+# Check the assigned IP address
+gcloud compute addresses describe hello-app-address --global
 ```
