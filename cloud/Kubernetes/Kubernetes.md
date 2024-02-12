@@ -13,10 +13,10 @@ kubectl scale --replicas=0 deployment/<deploymentName.yaml>
 kubectl delete deployment <deploymentName>
 
 // services
-kubectl delete service <deploymentName>
+kubectl delete service <serviceName>
 
 //ingress
-kubectl delete ingress <deploymentName>
+kubectl delete ingress <ingressName>
 ```
 
 ### Get Workloads in a cluster 
@@ -25,8 +25,8 @@ kubectl delete ingress <deploymentName>
 kubectl get deployments <deploymentName>
 
 // services
-kubectl get services <deploymentName>
+kubectl get services <serviceName>
 
 //ingress
-kubectl get ingresses <deploymentName>
+kubectl get ingresses <ingressName>
 ```
