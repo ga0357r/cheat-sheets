@@ -123,3 +123,31 @@ gcloud dns record-sets transaction start --zone=<zoneName>
 # Abort transaction
 gcloud dns record-sets transaction abort --zone=<zoneName>
 ```
+
+### Push a customized Dockerfile to GKE
+```
+# create a Docker image with the requiredName
+export PROJECT_ID=project-id
+docker build -t gcr.io/${PROJECT_ID}/<requiredName>:<requiredVersion(v1)> .
+
+# Confirm that the build was successful.
+docker images
+
+# Test created image
+docker run --rm -p 80:80 gcr.io/${PROJECT_ID}/<requiredName>:<requiredVersion : v1>
+
+# Push the container to GCR (Google Container Registry)
+# enable the Container Registry API for your project.
+gcloud services enable containerregistry.googleapis.com
+
+# authenticate to GCR
+gcloud auth configure-docker
+
+# upload the Docker image.
+docker push gcr.io/${PROJECT_ID}/gke-tutorial-image:v1
+
+# Check if the upload has been completed.
+gcloud container images list
+```
+
+
