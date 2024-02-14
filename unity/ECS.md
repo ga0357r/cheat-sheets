@@ -26,3 +26,23 @@ void Start()
 }
 
 ```
+
+## Create Systems
+```
+using UnityEngine;
+using Unity.Entities;
+
+public partial class LevelUpSystem : SystemBase
+{
+    protected override void OnUpdate()
+    {
+        float deltaTime = World.Time.DeltaTime;
+
+        Entities.ForEach((ref LevelComponent levelComponent) =>
+        {
+            levelComponent.level += 1f * deltaTime;
+            Debug.Log(levelComponent.level);
+        }).ScheduleParallel();
+    }
+}
+```
