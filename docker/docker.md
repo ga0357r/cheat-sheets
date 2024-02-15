@@ -146,3 +146,6 @@ Restore the volume with a tarball archive.
 ### Networking
 
 `docker run --name netshoot --rm -it nicolaka/netshoot /bin/bash`
+
+## Change docker context to default
+'docker context use default'
