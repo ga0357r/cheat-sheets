@@ -97,6 +97,7 @@ For more information, see [Install Docker Engine](https://docs.docker.com/engine
 
 | COMMAND | DESCRIPTION |
 | --- | --- |
+| `docker build -t my-image .` | build an image tagged(called) "my-image"|
 | `docker image ls` | List all local images |
 | `docker history <image>` | Show the image history |
 | `docker inspect <image>` | Show information (json formatted) |
