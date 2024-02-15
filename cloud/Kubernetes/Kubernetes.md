@@ -30,3 +30,9 @@ kubectl get services <serviceName>
 //ingress
 kubectl get ingresses <ingressName>
 ```
+
+### load a built image onto minikube 
+```
+minikube image load builtImagaName
+
+```
