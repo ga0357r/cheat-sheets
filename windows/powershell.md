@@ -12,3 +12,11 @@ PowerShell was made open-source and cross-platform with PowerShell Core, and can
 "name": "Powershell",
 "source": "Windows.Terminal.PowershellCore"
 ```
+
+### Code Sheet
+#### Start a Background Process
+```json
+Start-Process "<processName>" -ArgumentList "<argumentName>" -WindowStyle Hidden
+# For example : Start minikube dashboard in background
+Start-Process "minikube" -ArgumentList "dashboard" -WindowStyle Hidden
+```
