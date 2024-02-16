@@ -2,8 +2,12 @@
 
 ## Kubernetes Code Cheat Sheet
 ### Deploy workload to cluster 
-``` 
+```
+# if current directory is where the deployment is 
 kubectl apply -f <deploymentName.yaml>
+
+# if deployment is in a subfolder in the cd
+kubectl apply -f .\<subFolder>\<deploymentName.yaml>
 ```
 
 ### Stop running a workload in cluster 
