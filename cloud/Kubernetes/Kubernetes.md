@@ -55,4 +55,8 @@ metadata:
   name: default
 imagePullSecrets:
 - name: pob-server-key
+
+
+# delete secret
+kubectl delete secret pob-server-key
 ```
