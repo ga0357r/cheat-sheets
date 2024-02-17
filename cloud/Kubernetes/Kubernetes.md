@@ -46,5 +46,13 @@ minikube image load builtImagaName
 $jsonKey = Get-Content .\pull-images-from-registry-key.json | ConvertFrom-Json
 $password = $jsonKey.private_key
 
-kubectl create secret docker-registry pob-server-key --docker-email=any@valid.email --docker-username=_json_key --docker-password=$password --docker-server=africa-south1-docker.pkg.dev 
+kubectl create secret docker-registry pob-server-key --docker-email=any@valid.email --docker-username=_json_key --docker-password=$password --docker-server=africa-south1-docker.pkg.dev
+
+# apply the secret to namespace
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+imagePullSecrets:
+- name: pob-server-key
 ```
