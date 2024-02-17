@@ -40,3 +40,11 @@ kubectl get ingresses <ingressName>
 minikube image load builtImagaName
 
 ```
+
+### Create a secret 
+```
+$jsonKey = Get-Content .\pull-images-from-registry-key.json | ConvertFrom-Json
+$password = $jsonKey.private_key
+
+kubectl create secret docker-registry pob-server-key --docker-email=any@valid.email --docker-username=_json_key --docker-password=$password --docker-server=africa-south1-docker.pkg.dev 
+```
