@@ -54,9 +54,9 @@ kind: ServiceAccount
 metadata:
   name: default
 imagePullSecrets:
-- name: pob-server-key
+- name: pob-server-repo-key
 
 
 # delete secret
-kubectl delete secret pob-server-key
+kubectl delete secret pob-server-repo-key
 ```
