@@ -150,4 +150,13 @@ docker push gcr.io/${PROJECT_ID}/gke-tutorial-image:v1
 gcloud container images list
 ```
 
+### Add permission to service account
+```
+# create a Docker image with the requiredName
+gcloud projects add-iam-policy-binding <project_id> --member="serviceAccount:<fullServiceAccount>" --role="roles/<fullRole>"
+
+#Example
+gcloud projects add-iam-policy-binding learning-gke-413115 --member="serviceAccount:pull-images-from-registry@learning-gke-413115.iam.gserviceaccount.com" --role="roles/artifactregistry.reader"
+```
+
 
