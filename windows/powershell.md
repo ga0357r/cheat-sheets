@@ -20,3 +20,15 @@ Start-Process "<processName>" -ArgumentList "<argumentName>" -WindowStyle Hidden
 # For example : Start minikube dashboard in background
 Start-Process "minikube" -ArgumentList "dashboard" -WindowStyle Hidden
 ```
+
+#### get Content From Json File
+```
+# convert from json to object
+$jsonKey = Get-Content .\pull-images-from-registry-key.json | ConvertFrom-Json
+$password = $jsonKey.private_key
+
+# get string value
+$jsonKey = Get-Content .\pull-images-from-registry-key.json | -Raw
+```
+
+
