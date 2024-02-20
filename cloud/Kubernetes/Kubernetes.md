@@ -71,4 +71,9 @@ kubectl port-forward service/<activeServiceName> 80:80
 minikube service <activeServiceName> --url
 ```
 
+### Enable network route
+```
+minikube tunnel
+```
+
 
