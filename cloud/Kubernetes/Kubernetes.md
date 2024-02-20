@@ -43,10 +43,10 @@ minikube image load builtImagaName
 
 ### Create a secret 
 ```
-$jsonKey = Get-Content .\pull-images-from-registry-key.json | ConvertFrom-Json
-$password = $jsonKey.private_key
+# copy key to minikube file system
+docker cp .\pull-images-from-registry-key.json minikube:/home/docker/pull-images-from-registry-key.json
 
-kubectl create secret docker-registry pob-server-repo-key --docker-email=any@valid.email --docker-username=_json_key --docker-password=$password --docker-server=africa-south1-docker.pkg.dev
+kubectl create secret docker-registry pob-server-repo-key --docker-server=https://africa-south1-docker.pkg.dev --docker-username=_json_key --docker-password "$(docker exec -it minikube cat /home/docker/pull-images-from-registry-key.json)" --docker-email=nonexistent@example.com
 
 # apply the secret to namespace
 apiVersion: v1
@@ -60,3 +60,15 @@ imagePullSecrets:
 # delete secret
 kubectl delete secret pob-server-repo-key
 ```
+
+### Port Forward 
+```
+kubectl port-forward service/<activeServiceName> 80:80
+```
+
+### Display endpoint url link for service 
+```
+minikube service <activeServiceName> --url
+```
+
+
