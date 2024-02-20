@@ -31,4 +31,10 @@ $password = $jsonKey.private_key
 $jsonKey = Get-Content .\pull-images-from-registry-key.json | -Raw
 ```
 
+#### use file to login to docker registry
+```
+# convert from json to object
+Get-Content .\pull-images-from-registry-key.json | docker login -u _json_key --password-stdin https://africa-south1-docker.pkg.dev
+```
+
 
