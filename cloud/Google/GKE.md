@@ -159,4 +159,8 @@ gcloud projects add-iam-policy-binding <project_id> --member="serviceAccount:<fu
 gcloud projects add-iam-policy-binding learning-gke-413115 --member="serviceAccount:pull-images-from-registry@learning-gke-413115.iam.gserviceaccount.com" --role="roles/artifactregistry.reader"
 ```
 
-
+### List images in other repositories
+```
+gcloud container images list --repository <registry_server_domain>/<project_id>/<repo_name>
+# for example : gcloud container images list --repository africa-south1-docker.pkg.dev/learning-gke-413115/pob-server
+```
