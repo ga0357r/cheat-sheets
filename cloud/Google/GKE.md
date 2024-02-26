@@ -128,7 +128,10 @@ gcloud dns record-sets transaction abort --zone=<zoneName>
 ```
 # create a Docker image with the requiredName
 export PROJECT_ID=project-id
+# export PROJECT_ID=learning-gke-413115
+
 docker build -t gcr.io/${PROJECT_ID}/<requiredName>:<requiredVersion(v1)> .
+# docker build -t africa-south1-docker.pkg.dev/learning-gke-413115/pob-server/testing/pob-server-web:v1 .
 
 # Confirm that the build was successful.
 docker images
@@ -145,6 +148,7 @@ gcloud auth configure-docker
 
 # upload the Docker image.
 docker push gcr.io/${PROJECT_ID}/gke-tutorial-image:v1
+# docker push africa-south1-docker.pkg.dev/learning-gke-413115/pob-server/testing/pob-server-web:v1
 
 # Check if the upload has been completed.
 gcloud container images list
