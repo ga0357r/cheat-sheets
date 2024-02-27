@@ -138,6 +138,7 @@ docker images
 
 # Test created image
 docker run --rm -p 80:80 gcr.io/${PROJECT_ID}/<requiredName>:<requiredVersion : v1>
+# docker run  africa-south1-docker.pkg.dev/learning-gke-413115/pob-server/testing/pob-server-db-backup:v1
 
 # Push the container to GCR (Google Container Registry)
 # enable the Container Registry API for your project.
