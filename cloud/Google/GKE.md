@@ -175,7 +175,7 @@ gcloud container images list --repository <registry_server_domain>/<project_id>/
 ```
 # using gcloud cli
 gcloud compute disks create --size=<sizeNumber> --zone=<zoneName> <diskName>(gce-nfs-disk)
-# gcloud compute disks create --size=1GB --zone=africa-south1 pob-nfs-disk
+# gcloud compute disks create --size=1GB --zone=africa-south1-a pob-nfs-disk
 ```
 
 **2. Create NFS Server in GKE**
