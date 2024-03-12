@@ -169,3 +169,138 @@ gcloud projects add-iam-policy-binding learning-gke-413115 --member="serviceAcco
 gcloud container images list --repository <registry_server_domain>/<project_id>/<repo_name>
 # for example : gcloud container images list --repository africa-south1-docker.pkg.dev/learning-gke-413115/pob-server
 ```
+
+### Create a Network File System(NFS) Server with Google Compute Engine persistent disks and mount them to your containers.
+**1. Create Persistent Disk in Google Compute Engine**
+```
+# using gcloud cli
+gcloud compute disks create --size=<sizeNumber> --zone=<zoneName> <diskName>(gce-nfs-disk)
+# gcloud compute disks create --size=1GB --zone=africa-south1 pob-nfs-disk
+```
+
+**2. Create NFS Server in GKE**
+```
+# kubectl apply -f 001-nfs-server.yaml
+# 001-nfs-server.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nfs-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: nfs-server
+  template:
+    metadata:
+      labels:
+        role: nfs-server
+    spec:
+      containers:
+      - name: nfs-server
+        image: gcr.io/google_containers/volume-nfs:0.8
+        ports:
+          - name: nfs
+            containerPort: 2049
+          - name: mountd
+            containerPort: 20048
+          - name: rpcbind
+            containerPort: 111
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - mountPath: /exports
+            name: mypvc
+      volumes:
+        - name: mypvc
+          gcePersistentDisk:
+            pdName: gce-nfs-disk
+            fsType: ext4
+```
+
+
+**3. Create NFS Service in GKE**
+```
+# kubectl apply -f 002-nfs-server-service.yaml
+# 002-nfs-server-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nfs-server
+spec:
+  # clusterIP: 10.3.240.20
+  ports:
+    - name: nfs
+      port: 2049
+    - name: mountd
+      port: 20048
+    - name: rpcbind
+      port: 111
+  selector:
+    role: nfs-server
+```
+Note down the cluster IP : "kubectl get svc nfs-server" # 10.23.241.98
+
+**4. Create Persistent Volume and Persistent Volume Claims**
+```
+# kubect apply -f 003-pv-pvc.yaml
+# 003-pv-pvc.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: <ClusterIP> # Service discovery name nfs-service.default.svc.cluster.local.
+    path: "/"
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nfs
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 1Gi
+```
+
+**5. Configuring Pods with PVC**
+```
+# kubect apply -f nfs-busybox.yaml
+# nfs-busybox
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nfs-busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: nfs-busybox
+  template:
+    metadata:
+      labels:
+        name: nfs-busybox
+    spec:
+      containers:
+      - image: busybox
+        imagePullPolicy: Always
+        name: busybox
+        volumeMounts:
+          # name must match the volume name below
+          - name: my-pvc-nfs
+            mountPath: "/mnt"
+      volumes:
+      - name: my-pvc-nfs
+        persistentVolumeClaim:
+          claimName: nfs
+```
+
