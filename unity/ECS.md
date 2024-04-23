@@ -9,7 +9,20 @@ The Entity Component System (ECS) is the core of the Unity Data-Oriented Tech St
 3) Systems -  The logic that transforms the component data from its current state to its next state— for example, a system might update the positions of all moving entities by their velocity times the time interval since the previous frame.
 
 ## Entities
-**Entities represent the individual "things" in you game or program**. An entity has neither behavior nor data; instead, it identifies which pieces of data belong together. Systems provide the behavior. Components store the data. [To-Do-Information 1](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_entities.html)
+**Entities represent the individual "things" in you game or program**. An entity has neither behavior nor data; instead, it identifies which pieces of data belong together. Systems provide the behavior. Components store the data. An entity is essentially an ID. You can think of it as a super lightweight GameObject. Entity IDs are the only stable way to store a reference to another component or entity.
+
+An EntityManager manages all of the entities in a World. Although an entity does not have a type, groups of entities can be categorized by the types of the data components associated with them. The EntityManager uses EntityArchetypes to group related entities categorized by the types of the data components associated with them.
+
+### Creating Entities
+There are 3 ways to create entities
+1) The easiest way is to through the unity Editor - By setting up both GameObjects placed in a scene and Prefabs to be converted into entities at runtime.
+2) For more dynamic parts of your game or program - By creating spawning  systems that create multiple entities in a job.
+3) Entities can be created one at a time using EntityManager.CreateEntity functions.
+
+Note: I personally will recommend creating entities through the unity editor due to its simplicity.
+
+## Components
+[To-Do-Information 1](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_components.html)
 
 ## How to Debug in ECS
 Use the **Systems** and **Entities Hierarchy** present in **"Window > Entities"**.
