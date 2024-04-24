@@ -45,7 +45,7 @@ IComponentData is a pure ECS-style component, meaning that it defines no behavio
 
 IComponentData structs may not contain references to managed objects. Since the all ComponentData lives in simple non-garbage-collected tracked chunk memory.
 
-### General Purpise Components
+### Shared Component Data
 [To-Do-Information 1](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_components.html)
 
 ## How to Debug in ECS
