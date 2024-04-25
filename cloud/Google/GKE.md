@@ -92,6 +92,9 @@ gcloud compute addresses create <addressName> --global
 
 # Check the assigned IP address
 gcloud compute addresses describe <addressName> --global
+
+# Check all global static ip addresses
+gcloud compute addresses list --global
 ```
 
 ### Get all managed zones 
