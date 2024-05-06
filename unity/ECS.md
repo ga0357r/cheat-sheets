@@ -21,6 +21,17 @@ There are 3 ways to create entities
 
 Note: I personally will recommend creating entities through the unity editor due to its simplicity.
 
+```
+void Start()
+{
+    EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+    Entity entity = entityManager.CreateEntity(typeof(LevelComponent));
+
+    entityManager.SetComponentData(entity, new LevelComponent { level = 10 });
+}
+
+```
+
 ### World
 A World owns both an EntityManager and a set of ComponentSystems. By default unity automatically creates a single World when entering Play Mode and populates it with all available ComponentSystem objects in the project. For more information see [link](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/world.html) 
 
@@ -43,15 +54,8 @@ ComponentData in Unity is a struct that contains only variables, the instance da
 #### IComponentData
 IComponentData is a pure ECS-style component, meaning that it defines no behavior, only data. IComponentData is a struct rather than a class, meaning that it is copied by value instead of by reference by default. 
 
-IComponentData structs may not contain references to managed objects. Since the all ComponentData lives in simple non-garbage-collected tracked chunk memory.
+IComponentData structs may not contain references to managed objects. Since the all ComponentData lives in simple non-garbage-collected tracked chunk memory. For more information on IComponentData see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/component_data.html)
 
-### Shared Component Data
-[To-Do-Information 1](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_components.html)
-
-## How to Debug in ECS
-Use the **Systems** and **Entities Hierarchy** present in **"Window > Entities"**.
-
-## Create Components
 ```
 using Unity.Entities;
 
@@ -62,17 +66,37 @@ public struct LevelComponent:IComponentData
 
 ```
 
-## Create Entities
+### Shared Component Data
+Shared components are a special kind of data component that you can use to subdivide entities based on the specific values in the shared component (in addition to their archetype).
+
+When you add a shared component to an entity, the EntityManager places all entities with the same shared data values into the same Chunk. Shared components allow your systems to process like entities together.
+
+**Note: Over using shared components can lead to poor Chunk utilization since it involves a combinatorial expansion of the number of memory Chunks required based on archetype and every unique value of each shared component field. Avoid adding unnecessary fields to a shared component Use the Entity Debugger to view the current Chunk utilization.**
+
+IComponentData is generally appropriate for data that varies between entities.
+ISharedComponentData is appropriate when many entities share something in common. For example in the Boid demo we instantiate many entities from the same Prefab and thus the RenderMesh between many Boid entities is exactly the same.
+
+The great thing about ISharedComponentData is that there is literally zero memory cost on a per entity basis. For more information on ISharedComponentData see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_components.html)
+
 ```
-void Start()
+[System.Serializable]
+public struct RenderMesh : ISharedComponentData
 {
-    EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-    Entity entity = entityManager.CreateEntity(typeof(LevelComponent));
+    public Mesh                 mesh;
+    public Material             material;
 
-    entityManager.SetComponentData(entity, new LevelComponent { level = 10 });
+    public ShadowCastingMode    castShadows;
+    public bool                 receiveShadows;
 }
-
 ```
+
+
+### System State Components
+[To-do](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/system_state_components.html)
+
+## How to Debug in ECS
+Use the **Systems** and **Entities Hierarchy** present in **"Window > Entities"**.
+
 
 ## Create Systems
 ```
