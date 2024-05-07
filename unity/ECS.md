@@ -141,6 +141,9 @@ All of these functions are executed on the main thread. Note that you can schedu
 ### Component Systems
 For more information on Component Systems see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/component_system.html)
 
+See Physics 2D
+[documentation](https://docs.unity3d.com/Packages/com.unity.2d.entities@0.22/manual/physics-example.html)
+
 
 
 
