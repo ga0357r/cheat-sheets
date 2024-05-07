@@ -92,7 +92,57 @@ public struct RenderMesh : ISharedComponentData
 
 
 ### System State Components
-[To-do](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/system_state_components.html)
+The purpose of **SystemStateComponentData** is to allow you to track resources internal to a system and have the opportunity to appropriately create and destroy those resources as needed without relying on individual callbacks. 
+
+**SystemStateComponentData** and **SystemStateSharedComponentData** are exactly like **ComponentData** and **SharedComponentData**, respectively, except in one important respect:
+
+1. **SystemStateComponentData** is not deleted when an entity is destroyed. DestroyEntity is shorthand for
+a. Find all components which reference this particular entity ID.
+b. Delete those components.
+c. Recycle the entity id for reuse.
+
+However, if **SystemStateComponentData** is present, it is not removed. This gives a system the opportunity to cleanup any resources or state associated with an entity ID. The entity ID will only be reused once all SystemStateComponentData has been removed.
+
+For more information on System State Components see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/system_state_components.html)
+
+### Dynamic Buffers
+A **DynamicBuffer** is a type of component data that allows a variable-sized, "stretchy" buffer to be associated with an entity. It behaves as a component type that carries an internal capacity of a certain number of elements, but can allocate a heap memory block if the internal capacity is exhausted.
+
+Memory management is fully automatic when using this approach. Memory associated with **DynamicBuffers** is managed by the EntityManager so that when a **DynamicBuffer** component is removed, any associated heap memory is automatically freed as well.
+
+**DynamicBuffers** supersede fixed array support which has been removed.
+
+For more information on Dynamic Buffers see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/dynamic_buffers.html)
+
+### Chunk components
+Use chunk components to associate data with a specific chunk. The main differences between working with chunk components and general-purpose components is that you use different functions to add, set, and remove them. Chunk components also have their own ComponentType functions for use in defining entity archetypes and queries.
+
+For more information on Chunk components see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_chunk_component.html)
+
+## Systems
+A **System**, the S in ECS, provides the logic that transforms the component data from its current state to its next state — for example, a system might update the positions of all moving entities by their velocity times the time interval since the previous update.
+
+Unity ECS provides a number of different kinds of systems. The main systems that you can implement to transform your entity data are the **ComponentSystem** and the **JobComponentSystem**. 
+
+**In a Job Component System, you typically schedule Jobs in the OnUpdate() function.**  In general, Job Component Systems provide the best performance since they take advantage of multiple CPU cores. Performance can be improved even more when your Jobs are compiled by the Burst compiler.
+
+Systems provide event-style callback functions, such as **OnCreate()** and **OnUpdate()** that you can implement to run code at the correct time in a system's life cycle. 
+
+### System Event Functions
+1. OnCreate() -- called when the system is created.
+2. OnStartRunning() -- before the first OnUpdate and whenever the system resumes running.
+3. OnUpdate() -- every frame as long as the system has work to do (see ShouldRunSystem()) and the system is Enabled. Note that the OnUpdate function is defined in the subclasses of ComponentSystemBase; each type of system class can define its own update behavior.
+4. OnStopRunning() -- whenever the system stops updating because it finds no entities matching its queries. Also called before OnDestroy.
+5. OnDestroy() -- when the system is destroyed.
+
+All of these functions are executed on the main thread. Note that you can schedule Jobs from the OnUpdate(JobHandle) function of a JobComponentSystem to perform work on background threads.
+
+
+### Component Systems
+For more information on Component Systems see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/component_system.html)
+
+
+
 
 ## How to Debug in ECS
 Use the **Systems** and **Entities Hierarchy** present in **"Window > Entities"**.
