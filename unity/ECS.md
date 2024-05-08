@@ -1,5 +1,9 @@
 # Entity Component System(ECS)
-ECS for Unity (Entity Component System) is a data-oriented framework compatible with GameObjects, enabling seasoned Unity creators to build more ambitious games thanks to an unprecedented level of control and determinism. [To-Do-Information 1](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/index.html). [To-Do-Information 2](https://docs.unity3d.com/Packages/com.unity.entities@1.2/manual/index.html)
+ECS for Unity (Entity Component System) is a data-oriented framework compatible with GameObjects, enabling seasoned Unity creators to build more ambitious games thanks to an unprecedented level of control and determinism. 
+
+See Physics 2D for 2D physics. [documentation](https://docs.unity3d.com/Packages/com.unity.2d.entities@0.22/manual/physics-example.html)
+[To-Do-Information 1](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/index.html). [To-Do-Information 2](https://docs.unity3d.com/Packages/com.unity.entities@1.2/manual/index.html).
+
 
 The Entity Component System (ECS) is the core of the Unity Data-Oriented Tech Stack. ECS has three principal parts:
 1) Entities -  The entities, or things, that populate your game or program.
@@ -139,10 +143,75 @@ All of these functions are executed on the main thread. Note that you can schedu
 
 
 ### Component Systems
+A ComponentSystem in Unity (also known as a system in standard ECS terms) performs operations on entities. A ComponentSystem cannot contain instance data. To put this in terms of the old Unity system, this is somewhat similar to an old Component class, but one that only contains methods. One ComponentSystem is responsible for updating all entities with a matching set of components (that is defined within a struct called a EntityQuery).
+
+Unity ECS provides an abstract class called ComponentSystem that you can extend in your code.
+
 For more information on Component Systems see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/component_system.html)
 
-See Physics 2D
-[documentation](https://docs.unity3d.com/Packages/com.unity.2d.entities@0.22/manual/physics-example.html)
+
+### Job Component Systems
+For more information on Job Component Systems see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/job_component_system.html)
+
+#### Automatic job dependency management
+Managing dependencies is hard. This is why in JobComponentSystem we are doing it automatically for you. The rules are simple: jobs from different systems can read from IComponentData of the same type in parallel. If one of the jobs is writing to the data then they can't run in parallel and will be scheduled with a dependency between the jobs.
+
+```
+public class RotationSpeedSystem : JobComponentSystem
+{
+    [BurstCompile]
+    struct RotationSpeedRotation : IJobForEach<Rotation, RotationSpeed>
+    {
+        public float dt;
+
+        public void Execute(ref Rotation rotation, [ReadOnly]ref RotationSpeed speed)
+        {
+            rotation.value = math.mul(math.normalize(rotation.value), quaternion.axisAngle(math.up(), speed.speed * dt));
+        }
+    }
+
+    // Any previously scheduled jobs reading/writing from Rotation or writing to RotationSpeed 
+    // will automatically be included in the inputDeps dependency.
+    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    {
+        var job = new RotationSpeedRotation() { dt = Time.deltaTime };
+        return job.Schedule(this, inputDeps);
+    } 
+}
+
+```
+
+#### How does this work?
+All jobs and thus systems declare what ComponentTypes they read or write to. As a result when a JobComponentSystem returns a JobHandle it is automatically registered with the EntityManager and all the types including the information about if it is reading or writing.
+
+Thus if a system writes to component A, and another system later on reads from component A, then the JobComponentSystem looks through the list of types it is reading from and thus passes you a dependency against the job from the first system.
+
+JobComponentSystem simply chains jobs as dependencies where needed and thus causes no stalls on the main thread. But what happens if a non-job ComponentSystem accesses the same data? Because all access is declared, the ComponentSystem automatically completes all jobs running against component types that the system uses before invoking OnUpdate.
+
+#### Dependency management is conservative & deterministic
+Dependency management is conservative. ComponentSystem simply tracks all EntityQueryobjects ever used and stores which types are being written or read based on that.
+
+Also when scheduling multiple jobs in a single system, dependencies must be passed to all jobs even though different jobs may need less dependencies. If that proves to be a performance issue the best solution is to split a system into two.
+
+The dependency management approach is conservative. It allows for deterministic and correct behaviour while providing a very simple API.
+
+#### Sync points
+All structural changes have hard sync points. CreateEntity, Instantiate, Destroy, AddComponent, RemoveComponent, SetSharedComponentData all have a hard sync point. Meaning all jobs scheduled through JobComponentSystem will be completed before creating the entity, for example. This happens automatically. So for instance: calling EntityManager.CreateEntity in the middle of the frame might result in a large stall waiting for all previously scheduled jobs in the World to complete.
+
+See [EntityCommandBuffer](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/entity_command_buffer.html) for more on avoiding sync points when creating entities during game play.
+
+
+#### Multiple Worlds
+Every World has its own EntityManager and thus a separate set of JobHandle dependency management. A hard sync point in one world will not affect the other World. As a result, for streaming and procedural generation scenarios, it is useful to create entities in one World and then move them to another World in one transaction at the beginning of the frame.
+
+
+
+### Entity Command Buffer
+For more information on Entity Command Buffer, see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/entity_command_buffer.html)
+
+#### Entity Command Buffer Systems
+
+#### Using EntityCommandBuffers from ParallelFor jobs
 
 
 
