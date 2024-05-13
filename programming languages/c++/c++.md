@@ -17,7 +17,7 @@ nums.length(); // 4
 # Sorting an Array
 
 ```
-// #include <algorithm>
+#include <algorithm>
 void SortList(std::vector<int> nums)
 {
     std::sort(nums.begin(), nums.end());
