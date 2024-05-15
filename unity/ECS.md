@@ -204,16 +204,44 @@ See [EntityCommandBuffer](https://docs.unity3d.com/Packages/com.unity.entities@0
 #### Multiple Worlds
 Every World has its own EntityManager and thus a separate set of JobHandle dependency management. A hard sync point in one world will not affect the other World. As a result, for streaming and procedural generation scenarios, it is useful to create entities in one World and then move them to another World in one transaction at the beginning of the frame.
 
-
-
 ### Entity Command Buffer
+The EntityCommandBuffer class solves two important problems:
+
+1. When you're in a job, you can't access the EntityManager.
+2. When you access the EntityManager (to say, create an entity) you invalidate all injected arrays and EntityQuery objects.
+
+The EntityCommandBuffer abstraction allows you to queue up changes (from either a job or from the main thread) so that they can take effect later on the main thread. There are two ways to use a EntityCommandBuffer:
+
+ComponentSystem subclasses which update on the main thread have one available automatically called PostUpdateCommands. To use it, simply reference the attribute and queue up your changes. They will be automatically applied to the world immediately after you return from your system's Update function.
+
+For example:
+
+```
+PostUpdateCommands.CreateEntity(TwoStickBootstrap.BasicEnemyArchetype);
+PostUpdateCommands.SetComponent(new Position2D { Value = spawnPosition });
+PostUpdateCommands.SetComponent(new Heading2D { Value = new float2(0.0f, -1.0f) });
+PostUpdateCommands.SetComponent(default(Enemy));
+PostUpdateCommands.SetComponent(new Health { Value = TwoStickBootstrap.Settings.enemyInitialHealth });
+PostUpdateCommands.SetComponent(new EnemyShootState { Cooldown = 0.5f });
+PostUpdateCommands.SetComponent(new MoveSpeed { speed = TwoStickBootstrap.Settings.enemySpeed });
+PostUpdateCommands.AddSharedComponent(TwoStickBootstrap.EnemyLook);
+```
+
 For more information on Entity Command Buffer, see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/entity_command_buffer.html)
 
 #### Entity Command Buffer Systems
+The default World initialization provides three system groups, for initialization, simulation, and presentation, that are updated in order each frame. Within a group, there is an entity command buffer system that runs before any other system in the group and another that runs after all other systems in the group. Preferably, you should use one of the existing command buffer systems rather than creating your own in order to minimize synchronization points. See [Default System Groups](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/system_update_order.html) for a list of the default groups and command buffer systems.
 
 #### Using EntityCommandBuffers from ParallelFor jobs
+When using an EntityCommandBuffer to issue EntityManager commands from [ParallelFor jobs](https://docs.unity3d.com/Manual/JobSystemParallelForJobs.html), the EntityCommandBuffer.Concurrent interface is used to guarantee thread safety and deterministic playback. The public methods in this interface take an extra jobIndex parameter, which is used to playback the recorded commands in a deterministic order. The jobIndex must be a unique ID for each job. For performance reasons, jobIndex should be the (increasing) index values passed to IJobParallelFor.Execute(). Unless you really know what you're doing, using the index as jobIndex is the safest choice. Using other jobIndex values will produce the correct output, but can have severe performance implications in some cases.
 
+### System Update Order 
+The ECS framework creates a set of default system groups that you can use to update your systems in the correct phase of a frame. 
 
+See [System Update Order documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/system_update_order.html) for more information.
+
+## Accessing Entity Data
+See [Accessing Entity Data documentation] (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration.html) for more information. 
 
 
 ## How to Debug in ECS
