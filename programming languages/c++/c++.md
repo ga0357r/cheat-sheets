@@ -24,3 +24,41 @@ void SortList(std::vector<int> nums)
 }
 ```
 
+# Splitting a string
+```
+
+#include <sstream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+vector<string> GetSplitString(const string& sentence, char delimiter = ' ')
+{
+  vector<string> words;
+  stringstream ss(sentence);
+  string word;
+
+  // Split the string by the delimiter (default: space)
+  while (getline(ss, word, delimiter)) {
+    words.push_back(word);
+  }
+
+  return words;
+}
+```
+
+# For each loop
+```
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+vector<int> elements;
+
+for(auto element : elements)
+{
+
+}
+```
