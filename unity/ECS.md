@@ -241,6 +241,22 @@ The ECS framework creates a set of default system groups that you can use to upd
 See [System Update Order documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/system_update_order.html) for more information.
 
 ## Accessing Entity Data
+Iterating over your data is one of the most common tasks you will perform when implementing an ECS system. ECS systems typically process a set of entities, reading data from one or more components, performing a calculation, and then writing the result to another component.
+
+In general, the most efficient way to iterate over your entities and components is in a parallelizable Job that processes the components in order. This takes advantage of processing power from all available cores and data locality to avoid CPU cache misses.
+
+You can iterate over ECS data in the following ways:
+IJobForEach — the simplest efficient way to process component data entity by entity.
+
+IJobForEachWithEntity — slightly more complex than IJobForEach, giving you access to the entity handle and array index of the entity you are processing.
+
+IJobChunk — iterates over the eligible blocks of memory (called a Chunk) containing matching entities. Your Job Execute() function can iterate over the Elements inside each chunk using a for loop. You can use IJobChunk for more complex situations than supported by IJobForEach, while maintaining maximum efficiency.
+
+ComponentSystem — the ComponentSystem offers the Entities.ForEach delegate functions to help iterate over your entities. However, ForEach runs on the main thread, so typically, you should only use ComponentSystem implementations for tasks that must be carried out on the main thread anyway.
+
+Manual iteration — if the previous methods are insufficient, you can manually iterate over entities or chunks. For example, you can get a NativeArray containing entities or the chunks of the entities that you want to process and iterate over them using a Job, such as IJobParallelFor.
+
+
 See [Accessing Entity Data documentation] (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration.html) for more information. 
 
 
