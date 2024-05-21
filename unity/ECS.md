@@ -259,6 +259,83 @@ Manual iteration — if the previous methods are insufficient, you can manually 
 
 See [Accessing Entity Data documentation] (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration.html) for more information. 
 
+### Using IJobForEach
+You can define an IJobForEach Job in a JobComponentSystem to read and write component data.
+
+When the Job runs, the ECS framework finds all of the entities that have the required components and calls the Job’s Execute() function for each of them.
+
+The following example illustrates a simple system that uses IJobForEach. The Job reads a RotationSpeed component and writes to a RotationQuaternion component.
+
+```
+public class RotationSpeedSystem : JobComponentSystem
+{
+   // Use the [BurstCompile] attribute to compile a job with Burst.
+   [BurstCompile]
+   struct RotationSpeedJob : IJobForEach<RotationQuaternion, RotationSpeed>
+   {
+       public float DeltaTime;
+       // The [ReadOnly] attribute tells the job scheduler that this job will not write to rotSpeed
+       public void Execute(ref RotationQuaternion rotationQuaternion, [ReadOnly] ref RotationSpeed rotSpeed)
+       {
+           // Rotate something about its up vector at the speed given by RotationSpeed.  
+           rotationQuaternion.Value = math.mul(math.normalize(rotationQuaternion.Value), quaternion.AxisAngle(math.up(), rotSpeed.RadiansPerSecond * DeltaTime));
+       }
+   }
+
+// OnUpdate runs on the main thread.
+// Any previously scheduled jobs reading/writing from Rotation or writing to RotationSpeed 
+// will automatically be included in the inputDependencies.
+protected override JobHandle OnUpdate(JobHandle inputDependencies)
+   {
+       var job = new RotationSpeedJob()
+       {
+           DeltaTime = Time.deltaTime
+       };
+       return job.Schedule(this, inputDependencies);
+   }
+}
+```
+
+See [Using IJobForEach documentation] for more information (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration.html) for more information.
+
+### Using IJobChunk
+You can implement IJobChunk inside a JobComponentSystem to iterate through your data by chunk. The JobComponentSystem calls your Execute() function once for each chunk that contains the entities that you want the system to process. You can then process the data inside each chunk, entity by entity.
+
+Iterating with IJobChunk requires more code setup than does IJobForEach, but is also more explicit and represents the most direct access to the data, as it is actually stored.
+
+Another benefit of using iterating by chunks is that you can check whether an optional component is present in each chunk (with Archetype.Has<T>) and process all the entities in the chunk accordingly.
+
+See [Using IJobChunk documentation] for more information (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration_job.html) for more information.
+
+### Using ComponentSystem
+You can use a ComponentSystem to process your data. ComponentSystem methods run on the main thread and thus don’t take advantage of multiple CPU cores. Use ComponentSystems in the following circumstances:
+
+- Debugging or exploratory development — sometimes it is easier to observe what is going on when the code is running on the main thread. You can, for example, log debug text and draw debug graphics.
+
+- When the system needs to access or interface with other APIs that can only run on the main thread — this can help you gradually convert your game systems to ECS rather than having to rewrite everything from the start.
+
+- The amount of work the system performs is less than the small overhead of creating and scheduling a Job.
+
+- When it is desirable to make structural changes (add/remove components, destroy entities, etc.) to entities directly while iterating through them. Unlike a JobComponentSystem, ComponentSystems can modify entities inside of a ForEach lambda function.
+
+#### Iterating with ForEach delegates
+The ComponentSystem provides an Entities.ForEach function that simplifies the task of iterating over a set of entities. Call ForEach in the system’s OnUpdate() function passing in a lambda function that takes the relevant components as parameters and whose function body performs the necessary work.
+
+```
+public class RotationSpeedSystem : ComponentSystem
+{
+   protected override void OnUpdate()
+   {
+       Entities.ForEach( (ref RotationSpeed rotationSpeed, ref RotationQuaternion rotation) =>
+       {
+           var deltaTime = Time.deltaTime;
+           rotation.Value = math.mul(math.normalize(rotation.Value),
+               quaternion.AxisAngle(math.up(), rotationSpeed.RadiansPerSecond * deltaTime));
+       });
+   }
+```
+
+See [Using ComponentSystem documentation] for more information (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/entity_iteration_foreach.html) for more information.
 
 ## How to Debug in ECS
 Use the **Systems** and **Entities Hierarchy** present in **"Window > Entities"**.
