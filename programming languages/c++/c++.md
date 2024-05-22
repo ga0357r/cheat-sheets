@@ -62,3 +62,15 @@ for(auto element : elements)
 
 }
 ```
+
+# using regular expression to remove whitespaces
+```
+#include <string>
+
+using namespace std;
+
+string  sentence = "Hello   World   ";
+sentence = std::regex_replace(sentence, std::regex("^ +| +$|( ) +"), "$1");
+cout << sentence << endl;
+//sentence = Hello World
+```
