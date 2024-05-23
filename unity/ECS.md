@@ -230,7 +230,9 @@ PostUpdateCommands.AddSharedComponent(TwoStickBootstrap.EnemyLook);
 For more information on Entity Command Buffer, see the [documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/entity_command_buffer.html)
 
 #### Entity Command Buffer Systems
-The default World initialization provides three system groups, for initialization, simulation, and presentation, that are updated in order each frame. Within a group, there is an entity command buffer system that runs before any other system in the group and another that runs after all other systems in the group. Preferably, you should use one of the existing command buffer systems rather than creating your own in order to minimize synchronization points. See [Default System Groups](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/system_update_order.html) for a list of the default groups and command buffer systems.
+The default World initialization provides three system groups, for initialization, simulation, and presentation, that are updated in order each frame. Within a group, there is an entity command buffer system that runs before any other system in the group and another that runs after all other systems in the group. Preferably, you should use one of the existing command buffer systems rather than creating your own in order to minimize synchronization points. 
+
+See [Default System Groups](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/system_update_order.html) for a list of the default groups and command buffer systems.
 
 #### Using EntityCommandBuffers from ParallelFor jobs
 When using an EntityCommandBuffer to issue EntityManager commands from [ParallelFor jobs](https://docs.unity3d.com/Manual/JobSystemParallelForJobs.html), the EntityCommandBuffer.Concurrent interface is used to guarantee thread safety and deterministic playback. The public methods in this interface take an extra jobIndex parameter, which is used to playback the recorded commands in a deterministic order. The jobIndex must be a unique ID for each job. For performance reasons, jobIndex should be the (increasing) index values passed to IJobParallelFor.Execute(). Unless you really know what you're doing, using the index as jobIndex is the safest choice. Using other jobIndex values will produce the correct output, but can have severe performance implications in some cases.
@@ -257,7 +259,7 @@ ComponentSystem — the ComponentSystem offers the Entities.ForEach delegate fun
 Manual iteration — if the previous methods are insufficient, you can manually iterate over entities or chunks. For example, you can get a NativeArray containing entities or the chunks of the entities that you want to process and iterate over them using a Job, such as IJobParallelFor.
 
 
-See [Accessing Entity Data documentation] (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration.html) for more information. 
+See [Accessing Entity Data documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration.html) for more information. 
 
 ### Using IJobForEach
 You can define an IJobForEach Job in a JobComponentSystem to read and write component data.
@@ -296,7 +298,7 @@ protected override JobHandle OnUpdate(JobHandle inputDependencies)
 }
 ```
 
-See [Using IJobForEach documentation] for more information (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration.html) for more information.
+See [Using IJobForEach documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/chunk_iteration.html) for more information.
 
 ### Using IJobChunk
 You can implement IJobChunk inside a JobComponentSystem to iterate through your data by chunk. The JobComponentSystem calls your Execute() function once for each chunk that contains the entities that you want the system to process. You can then process the data inside each chunk, entity by entity.
@@ -335,7 +337,140 @@ public class RotationSpeedSystem : ComponentSystem
    }
 ```
 
-See [Using ComponentSystem documentation] for more information (https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/entity_iteration_foreach.html) for more information.
+See [Using ComponentSystem documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/entity_iteration_foreach.html) for more information.
+
+### Manual iteration
+You can also request all the chunks explicitly in a NativeArray and process them with a Job such as IJobParallelFor. This method is recommended if you need to manage chunks in some way that is not appropriate for the simplified model of simply iterating over all the Chunks in a EntityQuery. As in:
+
+```
+public class RotationSpeedSystem : JobComponentSystem
+{
+   [BurstCompile]
+   struct RotationSpeedJob : IJobParallelFor
+   {
+       [DeallocateOnJobCompletion] public NativeArray<ArchetypeChunk> Chunks;
+       public ArchetypeChunkComponentType<RotationQuaternion> RotationType;
+       [ReadOnly] public ArchetypeChunkComponentType<RotationSpeed> RotationSpeedType;
+       public float DeltaTime;
+
+       public void Execute(int chunkIndex)
+       {
+           var chunk = Chunks[chunkIndex];
+           var chunkRotation = chunk.GetNativeArray(RotationType);
+           var chunkSpeed = chunk.GetNativeArray(RotationSpeedType);
+           var instanceCount = chunk.Count;
+
+           for (int i = 0; i < instanceCount; i++)
+           {
+               var rotation = chunkRotation[i];
+               var speed = chunkSpeed[i];
+               rotation.Value = math.mul(math.normalize(rotation.Value), quaternion.AxisAngle(math.up(), speed.RadiansPerSecond * DeltaTime));
+               chunkRotation[i] = rotation;
+           }
+       }
+   }
+
+   EntityQuery m_Query;   
+
+   protected override void OnCreate()
+   {
+       var queryDesc = new EntityQueryDesc
+       {
+           All = new ComponentType[]{ typeof(RotationQuaternion), ComponentType.ReadOnly<RotationSpeed>() }
+       };
+
+       m_Query = GetEntityQuery(queryDesc);
+   }
+
+   protected override JobHandle OnUpdate(JobHandle inputDeps)
+   {
+       var rotationType = GetArchetypeChunkComponentType<RotationQuaternion>();
+       var rotationSpeedType = GetArchetypeChunkComponentType<RotationSpeed>(true);
+       var chunks = m_Query.CreateArchetypeChunkArray(Allocator.TempJob);
+
+       var rotationsSpeedJob = new RotationSpeedJob
+       {
+           Chunks = chunks,
+           RotationType = rotationType,
+           RotationSpeedType = rotationSpeedType,
+           DeltaTime = Time.deltaTime
+       };
+       return rotationsSpeedJob.Schedule(chunks.Length,32,inputDeps);
+   }
+}
+```
+
+See [Manual iteration documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/manual_iteration.html) for more information.
+
+#### Iterating manually in a ComponentSystem
+Although not a generally recommended practice, you can use the EntityManager class to manually iterate through the entities or chunks. These iteration methods should only be used in test or debugging code (or when you are just experimenting) or in an isolated World in which you have a perfectly controlled set of entities.
+
+For example, the following snippet iterates through all of the entities in the active World:
+
+```
+var entityManager = World.Active.EntityManager;
+var allEntities = entityManager.GetAllEntities();
+foreach (var entity in allEntities)
+{
+   //...
+}
+allEntities.Dispose();
+```
+
+### Querying for data using a EntityQuery
+The first step to reading or writing data is finding that data. Data in the ECS framework is stored in components, which are grouped together in memory according to the archetype of the entity to which they belong. To define a view into your ECS data that contains only the specific data you need for a given algorithm or process, you can construct a EntityQuery.
+
+After creating a EntityQuery, you can
+
+- Run a Job to process the entities and components selected for the view
+- Get a NativeArray containing all the selected entities
+- Get NativeArrays of the selected components (by component type)
+- The entity and component arrays returned by a EntityQuery are guaranteed to be "parallel", that is, the same index value always applies to the same entity in any array.
+
+Note: that the ComponentSystem.Entites.ForEach delegates and IJobForEach create internal EntityQueries based on the component types and attributes you specify for these APIs.
+
+See [Querying for data using a EntityQuery documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_entity_query.html) for more information.
+
+### Jobs in ECS
+ECS uses the Job system to implement behavior -- the System part of ECS. An ECS System is concretely a Job created to transform the data stored in entity components
+
+For example, the following system updates positions:
+
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Jobs;
+using Unity.Transforms;
+using UnityEngine;
+
+```
+public class MovementSpeedSystem : JobComponentSystem
+{
+    [BurstCompile]
+    struct MovementSpeedJob : IJobForEach<Position, MovementSpeed>
+    {
+        public float dT;
+
+        public void Execute(ref Position Position, [ReadOnly] ref MovementSpeed movementSpeed)
+        {
+            float3 moveSpeed = movementSpeed.Value * dT;
+            Position.Value = Position.Value + moveSpeed;
+        }
+    }
+
+    // OnUpdate runs on the main thread.
+    protected override JobHandle OnUpdate(JobHandle inputDependencies)
+    {
+        var job = new MovementSpeedJob()
+        {
+            dT = Time.deltaTime
+        };
+
+        return job.Schedule(this, inputDependencies);
+    }
+}
+```
+
 
 ## How to Debug in ECS
 Use the **Systems** and **Entities Hierarchy** present in **"Window > Entities"**.
