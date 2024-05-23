@@ -471,27 +471,20 @@ public class MovementSpeedSystem : JobComponentSystem
 }
 ```
 
+See [Jobs in ECS documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_job_overview.html) for more information.
 
-## How to Debug in ECS
-Use the **Systems** and **Entities Hierarchy** present in **"Window > Entities"**.
+## Creating Gameplay in ECS
+This section discusses authoring DOTS-based games and other applications in the Unity Editor and the systems and components provided by ECS to help you implement game features.
 
+The systems include:
 
-## Create Systems
-```
-using UnityEngine;
-using Unity.Entities;
+Unity.Transforms — provides components for defining world-space transforms, 3D object hierarchies, and systems to manage them.
+Unity.Hybrid.Renderer — provides components and systems for rendering ECS entities in the Unity runtime.
 
-public partial class LevelUpSystem : SystemBase
-{
-    protected override void OnUpdate()
-    {
-        float deltaTime = World.Time.DeltaTime;
+See [Creating Gameplay in ECS documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/gp_overview.html) for more information.
 
-        Entities.ForEach((ref LevelComponent levelComponent) =>
-        {
-            levelComponent.level += 1f * deltaTime;
-            Debug.Log(levelComponent.level);
-        }).ScheduleParallel();
-    }
-}
-```
+### Transforms
+See [Transforms in ECS documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/transform_system.html) for more information.
+
+### Rendering
+See [Rendering in ECS documentation](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/gp_rendering.html) for more information.
