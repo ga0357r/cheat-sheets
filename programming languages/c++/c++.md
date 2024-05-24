@@ -37,6 +37,7 @@ vector<string> GetSplitString(const string& sentence, char delimiter = ' ')
 {
   vector<string> words;
   stringstream ss(sentence);
+  // ss.str()
   string word;
 
   // Split the string by the delimiter (default: space)
