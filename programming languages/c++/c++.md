@@ -66,6 +66,7 @@ for(auto element : elements)
 # using regular expression to remove whitespaces
 ```
 #include <string>
+#include <regex>
 
 using namespace std;
 
