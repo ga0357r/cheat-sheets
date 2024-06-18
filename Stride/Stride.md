@@ -64,7 +64,7 @@ Transform.WorldMatrix.Down
 ## Archetypes
 Archetypes are master assets that control the properties of assets you derive from them.
 
-#Input
+## Input
 ```
 public override void Update()
 {
