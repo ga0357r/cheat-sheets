@@ -1,4 +1,6 @@
 # Stride/Xenko
+- [Stride Manual](https://doc.stride3d.net/latest/en/manual/)
+- [Stride for Unity developers](https://doc.stride3d.net/latest/en/manual/stride-for-unity-developers/index.html)
 
 ## Similarities with Unity
 Unity -> Stride
