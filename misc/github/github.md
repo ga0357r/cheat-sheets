@@ -17,7 +17,7 @@ Add the Key to your service agent in local terminal using
 ``` 
 Get-Service -Name ssh-agent | Set-Service -StartupType Manual
 Start-Service ssh-agent
-ssh-add c:/Users/ayode/.ssh/id_ed25519
+ssh-add c:/Users/exampleUser/.ssh/id_ed25519
 ```
 
 add the key to your github account ``` cat ~/.ssh/id_ed25519.pub | clip ```. And go to your [GitHub Key Settings Page](https://github.com/settings/keys) and add your SSH key
