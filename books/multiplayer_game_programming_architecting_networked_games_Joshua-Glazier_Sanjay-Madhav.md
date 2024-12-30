@@ -12,7 +12,11 @@ Brief History of Computer Games
 
 - Local Area Network(LAN) Games: several computers connected to each other over a relatively small area. LANs really took off with the proliferation of the ethernet. DOOM 1993 was the progenitor of modern networked games supporting up to 4 players in a single game session
 
-- Online Games: players connect over some large network with geographically distant computers. In the late 1990s online games like id Software's Quake(1996) and Epic Game's Unreal (1998) took off. The major consideration when working with online games is latency.
+- Online Games: players connect over some large network with geographically distant computers. In the late 1990s online games like id Software's Quake(1996) and Epic Game's Unreal (1998) took off. The major consideration when working with online games is **latency**, the amount of time it takes for data to travel over the network. Services like Xbox Live and PlayStation Network help with multiplayer scalability.
+
+- Massively Multiplayer Online(MMO) Games: online multiplayer games are limited per session(4 to 32), however, in MMOs hundreds or thousands of players can join in a single game session. For example, Ultima Online(1997), EverQuest(1999), World of Warcraft(2004).
+
+Architecting an MMO is a complex technical challenge, most of the techniques necessary to create an MMO are well beyond the scope of this book. The foundation for creating a smaller scale networked game  is more important to understand before creating an MMO.
 ## The Internet
 
 ## Berkeley Sockets
