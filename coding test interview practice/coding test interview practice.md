@@ -80,8 +80,33 @@ public class Solution{
 
 ```
 
-### Remove Nth Node from End of List
+### Remove Nth Node from End of Linked List
+Linked List contains data and a pointer to the next node
 Relearn about the Linked List from the Udemy Course and come back to solve this test
+
+#### Linked List
+```
+
+#pragma once
+struct Node
+{
+  int data;
+  Node* next;
+};
+
+
+#pragma once
+class LinkedList
+{
+private:
+
+public:
+};
+
+
+```
+
+
 ```
 
 
