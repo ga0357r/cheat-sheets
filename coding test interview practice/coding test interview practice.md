@@ -81,6 +81,7 @@ public class Solution{
 ```
 
 ### Remove Nth Node from End of List
+Relearn about the Linked List from the Udemy Course and come back to solve this test
 ```
 
 
