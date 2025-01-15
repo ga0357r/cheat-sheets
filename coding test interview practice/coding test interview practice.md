@@ -86,29 +86,172 @@ Relearn about the Linked List from the Udemy Course and come back to solve this 
 
 #### Linked List
 ```
-
+//LinkedListNode.h
 #pragma once
-struct Node
+struct LinkedListNode
 {
+  
+public:
+  LinkedListNode();
+  LinkedListNode(int data);
+
   int data;
-  Node* next;
+  LinkedListNode* next;
 };
 
+//LinkedListNode.cpp
+#include "LinkedListNode.h"
 
+LinkedListNode::LinkedListNode()
+{
+  data = 0;
+  next = nullptr;
+}
+
+LinkedListNode::LinkedListNode(int data)
+{
+  this->data = data;
+  next = nullptr;
+}
+
+
+
+//LinkedList.h
+#include"LinkedListNode.h"
 #pragma once
 class LinkedList
 {
 private:
+  LinkedListNode* head;
 
 public:
+  LinkedList();
+  bool Add(LinkedListNode* node);
+  bool Remove(const int data);
+  LinkedListNode* GetNode(const int data);
+  void Display();
 };
 
+//LinkedList.cpp
+#include "LinkedList.h"
+#include <iostream>
+
+using namespace std;
+
+LinkedList::LinkedList()
+{
+  head = new LinkedListNode();
+}
+
+bool LinkedList::Add(LinkedListNode* node)
+{
+  LinkedListNode* end = head;
+
+  while (end->next != nullptr)
+  {
+    end = end->next;
+  }
+
+  end->next = node;
+  return true;
+}
+
+bool LinkedList::Remove(const int data)
+{
+  LinkedListNode* nodeToRemove = GetNode(data);
+  LinkedListNode* previous = head;
+
+  if (nodeToRemove == nullptr || nodeToRemove == head)
+  {
+    return false;
+  }
+
+  while (previous->next != nodeToRemove && previous->next != nullptr)
+  {
+    previous = previous->next;
+  }
+
+  previous->next = nodeToRemove->next;
+  delete nodeToRemove;
+  return true;
+}
+
+LinkedListNode* LinkedList::GetNode(const int data)
+{
+  LinkedListNode* nodeToRemove = nullptr;
+  LinkedListNode* end = head;
+
+  while (end->next != nullptr)
+  {
+    if (end->data == data)
+    {
+      nodeToRemove = end;
+      return nodeToRemove;
+    }
+    end = end->next;
+  }
+
+  return nodeToRemove;
+}
+
+void LinkedList::Display()
+{
+  LinkedListNode* p = head;
+
+  while (p->next != nullptr)
+  {
+    cout << p->data << "->" << flush;
+    p = p->next;
+  }
+
+  cout << p->data << "->" << flush;
+}
+
 
 ```
 
+#### Remove Nth Node from End of Linked List
+```
+using System.Collections.Generic;
 
+public class Solution
+{
+    public static LinkedListNode RemoveNthLastNode(LinkedListNode head, int n)
+    {
+        //32 -> 78 -> 65 -> 90 -> 12 -> 44. n = 3
+        // Replace this placeholder return statement with your code
+        LinkedListNode start = head;
+        LinkedListNode end = head;
+        LinkedListNode nodeToRemove;
+        
+        //TODO move right n steps forward
+        for(int i = 1; i<=n; i++ )
+        {
+          end = end.next;
+        }
+        
+        if(end == null) return head.next;
+        
+        //TODO move left and right forward until right-> next is null
+        while(end.next != null)
+        {
+          start = start.next;
+          end = end.next;
+        }
+        
+        //TODO left will be the previous of the nth node to Remove. 
+        //then left->next = next->next
+        nodeToRemove = start.next;
+        start.next = nodeToRemove.next;
+        
+        return head;
+    }
+}
 ```
 
+### Sort Colors
+Try to solve the Sort Colors problem.
+```
 
 ```
 
