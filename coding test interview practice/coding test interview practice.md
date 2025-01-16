@@ -252,7 +252,49 @@ public class Solution
 ### Sort Colors
 Try to solve the Sort Colors problem.
 ```
+using System;
 
+public class Solution {
+    public static int[] SortColors (int[] colors) {
+
+        // Write your code here using the 2 pointers pattern with comments teaching me
+        //[1, 0, 2, 1, 2, 2] - colors (red - 0 , white - 1, blue - 2)
+        int redPointer = 0;
+        int bluePointer = colors.Length - 1;
+        int current = 0;
+        
+        while (current <= bluePointer)
+        {
+          //TODO if current is 0 swap with redpointer and increment current and redpointer
+          if(colors[current] == 0)
+          {
+            Swap(ref colors[current], ref colors[redPointer]);
+            current++;
+            redPointer++;
+          }
+          
+          else if(colors[current] == 1)
+          {
+            current++;
+          }
+          
+          //TODO if current is 2 swap with bluePointer and decrement only bluePointer
+          else
+          {
+            Swap(ref colors[current], ref colors[bluePointer]);
+            bluePointer--;
+          }
+        }
+        return colors;
+    }
+    
+    private static void Swap(ref int a, ref int b)
+    {
+      var tempa = a;
+      a = b;
+      b = tempa;
+    }
+}
 ```
 
 ## Fast and Slow Pointers
