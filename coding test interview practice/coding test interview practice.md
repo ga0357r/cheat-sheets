@@ -299,6 +299,41 @@ public class Solution {
 
 ### Reverse Words in a String
 Try to solve the Reverse Words in a String problem.
+```
+using System;
+
+public class Solution {
+    public static string ReverseWords(string sentence) {
+
+        // Replace this placeholder return statement with your code
+        // Reverse the words in a sentence
+        //split this string based on a namespace
+        //create a new string starting from end
+
+        string[] splitString = sentence.Split(' ');
+        var reversedWords = "";
+
+        for (int i = splitString.Length - 1; i >= 0; i--)
+        {
+            if (i == 0 || i == splitString.Length - 1)
+            {
+                if (splitString[i] == "") continue;
+                if (reversedWords.Length > 0) reversedWords += " ";
+                reversedWords += splitString[i];
+            }
+
+            else
+            {
+                if (splitString[i] == "") continue;
+                if(reversedWords.Length > 0)reversedWords += " ";
+                reversedWords += splitString[i];
+            }
+        }
+
+        return reversedWords;
+    }
+}
+```
 
 ## Fast and Slow Pointers
 
