@@ -299,6 +299,8 @@ public class Solution {
 
 ### Reverse Words in a String
 Try to solve the Reverse Words in a String problem.
+
+My Solution
 ```
 using System;
 
@@ -331,6 +333,46 @@ public class Solution {
         }
 
         return reversedWords;
+    }
+}
+```
+
+Correct Solution
+```
+using System;
+
+public class Solution 
+{
+    public static string CorrectSolution(string sentence)
+    {
+        static void StrRev(ref char[] str, int startRev, int endRev)
+        {
+            while (startRev < endRev)
+            {
+                char temp = str[startRev];
+                str[startRev] = str[endRev];
+                str[endRev] = temp;
+                startRev++;
+                endRev--;
+            }
+        }
+
+        sentence = System.Text.RegularExpressions.Regex.Replace(sentence, "\\s+", " ").Trim();
+
+        char[] charArray = sentence.ToCharArray();
+
+        StrRev(ref charArray, 0, charArray.Length - 1);
+
+        for (int start = 0, end = 0; end <= charArray.Length; ++end)
+        {
+            if (end == charArray.Length || charArray[end] == ' ')
+            {
+                StrRev(ref charArray, start, end - 1);
+                start = end + 1;
+            }
+        }
+
+        return new string(charArray);
     }
 }
 ```
