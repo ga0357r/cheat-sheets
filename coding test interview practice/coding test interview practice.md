@@ -300,81 +300,68 @@ public class Solution {
 ### Reverse Words in a String
 Try to solve the Reverse Words in a String problem.
 
-My Solution
 ```
-using System;
-
-public class Solution {
-    public static string ReverseWords(string sentence) {
-
-        // Replace this placeholder return statement with your code
-        // Reverse the words in a sentence
-        //split this string based on a namespace
-        //create a new string starting from end
-
-        string[] splitString = sentence.Split(' ');
-        var reversedWords = "";
-
-        for (int i = splitString.Length - 1; i >= 0; i--)
+public static string ReverseWords2(string sentence)
+{
+    static void ReverseString(char[] arr, int start, int end)
+    {
+        while(start < end)
         {
-            if (i == 0 || i == splitString.Length - 1)
+            Swap(arr, start, end);
+            start++;
+            end--;
+        }
+
+        static void Swap(in char[] arr, in int start, in int end, in bool preferTupleSwapping = true)
+        {
+            if (preferTupleSwapping)
             {
-                if (splitString[i] == "") continue;
-                if (reversedWords.Length > 0) reversedWords += " ";
-                reversedWords += splitString[i];
+                (arr[start], arr[end]) = (arr[end], arr[start]);
+                return;
             }
 
             else
             {
-                if (splitString[i] == "") continue;
-                if(reversedWords.Length > 0)reversedWords += " ";
-                reversedWords += splitString[i];
+                var temp = arr[start];
+                arr[start] = arr[end];
+                arr[end] = temp;
             }
         }
-
-        return reversedWords;
     }
-}
-```
 
-Correct Solution
-```
-using System;
+    //remove whitespace
+    sentence = System.Text.RegularExpressions.Regex.Replace(sentence, "\\s+", " ").Trim();
+    char[] charArr = sentence.ToCharArray();
+    ReverseString(charArr, 0, charArr.Length - 1);
+    int start = 0 , end = 0;
 
-public class Solution 
-{
-    public static string CorrectSolution(string sentence)
+    while(end < charArr.Length)
     {
-        static void StrRev(ref char[] str, int startRev, int endRev)
+        if (charArr[end].ToString() == " ")
         {
-            while (startRev < endRev)
-            {
-                char temp = str[startRev];
-                str[startRev] = str[endRev];
-                str[endRev] = temp;
-                startRev++;
-                endRev--;
-            }
+            ReverseString(charArr, start, end - 1);
+            start = end + 1;
+            end = start;
+            continue;
         }
 
-        sentence = System.Text.RegularExpressions.Regex.Replace(sentence, "\\s+", " ").Trim();
-
-        char[] charArray = sentence.ToCharArray();
-
-        StrRev(ref charArray, 0, charArray.Length - 1);
-
-        for (int start = 0, end = 0; end <= charArray.Length; ++end)
+        if(end == charArr.Length - 1)
         {
-            if (end == charArray.Length || charArray[end] == ' ')
-            {
-                StrRev(ref charArray, start, end - 1);
-                start = end + 1;
-            }
+            ReverseString(charArr, start, end);
         }
 
-        return new string(charArray);
+        end++;
     }
+
+    return new string(charArr);
 }
+```
+
+### Valid Word Abbreviation
+Try to solve the Valid Word Abbreviation problem.
+```
+
+
 ```
 
 ## Fast and Slow Pointers

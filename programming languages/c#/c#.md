@@ -182,3 +182,9 @@ private static int ChooseIndexToRemove(int start, int end, string s)
     return start;
 }
 ```
+
+# Use Regular Expressions to replace any spaces with 1 space
+```
+// "//s+" - regular expression matches one or more whitespace characters
+        sentence = System.Text.RegularExpressions.Regex.Replace(sentence, "\\s+", " ").Trim();
+```
