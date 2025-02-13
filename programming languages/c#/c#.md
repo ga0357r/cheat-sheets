@@ -188,3 +188,31 @@ private static int ChooseIndexToRemove(int start, int end, string s)
 // "//s+" - regular expression matches one or more whitespace characters
         sentence = System.Text.RegularExpressions.Regex.Replace(sentence, "\\s+", " ").Trim();
 ```
+
+# To retrieve any consecutive number from a string
+```
+private static int ReturnNumberFromString(string s)
+{
+    // loop through the string
+    // get consecutive numbers
+    int numberToRetrieve = 0;
+
+    for(int index = 0; index < s.Length; index)
+    {
+        if(char.IsDigit(s[index]))
+        {
+            while(index < s.Length && char.IsDigit(s[index]))
+            {
+                //increasing numbers in a string can be represented by (*10)
+                // we minus s[index] from '0' since a char is represented by ASCII(numbers), so minus '0' will always return the correct number.
+                numberToRetrieve = numberToRetrieve * 10 + (s[index] - '0');
+            }
+        }
+
+        else
+        {
+            index++;
+        }
+    }
+}
+```
