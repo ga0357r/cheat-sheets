@@ -360,7 +360,47 @@ public static string ReverseWords2(string sentence)
 ### Valid Word Abbreviation
 Try to solve the Valid Word Abbreviation problem.
 ```
+public static bool ValidWordAbbreviation1(string word, string abbr)
+{
+    char[] wordArr = word.ToCharArray();
+    char[] abbrArr = abbr.ToCharArray();
+    int wordIndex = 0;
+    int abbrIndex = 0;
 
+    while (abbrIndex < abbrArr.Length)
+    {
+        if (char.IsDigit(abbrArr[abbrIndex]))
+        {
+            if (abbr[abbrIndex] == '0') return false;
+            int number = 0;
+
+            while (abbrIndex < abbrArr.Length && char.IsDigit(abbrArr[abbrIndex]))
+            {
+                number = number * 10 + (abbrArr[abbrIndex] - '0');
+                abbrIndex++;
+            }
+
+            wordIndex += number;
+        }
+
+        else
+        {
+            if (wordIndex >= wordArr.Length || wordArr[wordIndex] != abbrArr[abbrIndex]) return false;
+            wordIndex++;
+            abbrIndex++;
+        }
+    }
+
+    //have you reached the end of your string
+    return wordIndex == wordArr.Length && abbrIndex == abbr.Length;
+}
+
+```
+
+### Strobogrammatic Number
+Try to solve the Strobogrammatic Number problem.
+
+```
 
 ```
 
