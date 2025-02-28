@@ -401,7 +401,44 @@ public static bool ValidWordAbbreviation1(string word, string abbr)
 Try to solve the Strobogrammatic Number problem.
 
 ```
+using System;
+using System.Collections.Generic;
+public class Solution
+{
+    public static bool IsStrobogrammatic (string num) 
+    {
+       //69
+       // TODO Use a dictionary to map each digit to its valid rotated counterpart.
+       Dictionary<string, string> StrobogrammaticMap = new Dictionary<string, string>
+       {
+          //6 -> 9 or they are the same number
+          { "6", "9" },
+          { "9", "6" }
+        };
 
+       // TODO Initialize two pointers: one at the start and one at the end of the string.
+       // TODO Compare digits from both ends, to check each matches its valid rotation.
+       // TODO Move both the pointers inwards until they cross.
+       // TODO If any pair of digits does not match its valid rotation, return FALSE.
+       // TODO Return TRUE if all pairs are valid according to the strobogrammatic rules.
+       int start = 0, end = num.Length - 1;
+
+       while (start < end)
+       {
+          string startString = num[start].ToString();
+          string endString = num[end].ToString();
+          string stroboValue = "";
+          if(StrobogrammaticMap.TryGetValue(startString, out stroboValue)){}
+          else{stroboValue = "";}
+          bool isStrobogrammatic = stroboValue == endString;
+          if (startString != endString && !isStrobogrammatic) return false;
+          start++;
+          end--;
+       }
+       
+        return true;
+    }
+}
 ```
 
 ## Fast and Slow Pointers
