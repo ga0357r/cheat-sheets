@@ -441,6 +441,12 @@ public class Solution
 }
 ```
 
+### Minimum Number of Moves to Make Palindrome
+Try to solve the Minimum Number of Moves to Make Palindrome problem.
+```
+
+```
+
 ## Fast and Slow Pointers
 
 ## Sliding Window
