@@ -444,7 +444,38 @@ public class Solution
 ### Minimum Number of Moves to Make Palindrome
 Try to solve the Minimum Number of Moves to Make Palindrome problem.
 ```
+//wrong 2/5 in test cases. Need to improve
+public class Solution {
+    public int MinMovesToMakePalindrome(string s) {
+        
+        // ntiin
+        int moves = 0;
+        int start = 0;
+        int end = s.Length - 1;
+        char[] stringArr = s.ToArray();
 
+        while(start < end)
+        {
+          do
+          {
+            if(stringArr[end] == stringArr[end - 1])
+            {
+              var temp = stringArr[start + 1];
+              stringArr[start + 1] = stringArr[start];
+              stringArr[start] = temp;
+            }
+            else
+            {
+              moves++;
+            }
+            start++;
+            end--;
+          }
+          while(start < end);
+        }
+        return moves;
+    }
+}
 ```
 
 ## Fast and Slow Pointers
