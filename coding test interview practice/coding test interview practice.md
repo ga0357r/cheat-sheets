@@ -449,6 +449,7 @@ public class Solution {
     public int MinMovesToMakePalindrome(string s) {
         
         // ntiin
+        // ccxx
         int moves = 0;
         int start = 0;
         int end = s.Length - 1;
