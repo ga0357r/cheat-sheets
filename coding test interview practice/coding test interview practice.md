@@ -479,6 +479,70 @@ public class Solution {
 }
 ```
 
+### Find the Container with The Most Water
+```
+public class Solution {
+
+    private int GetMinNumber(int a, int b)
+    {
+        if(a < b)
+        {
+            return a;
+        }
+        else if(b < a)
+        {
+            return b;
+        }
+        else
+        {
+            return a;
+        }
+    }
+
+    public int MaxArea(int[] height) {
+        // 2 pointers low, high
+        // move the pointer that points to the smaller height
+        // if they are both the same numbers move them both forward
+        int low = 0;
+        int high = height.Length-1;
+        int length = 0;
+        int breadth = 0;
+        int maxArea = 0;
+        int currentArea = 0;
+
+        while(low < high)
+        {
+            breadth = GetMinNumber(height[low], height[high]);
+            length = high - low;
+            currentArea = length*breadth;
+            
+            if(currentArea > maxArea)
+            {
+                maxArea = currentArea;
+            }
+
+            if(height[low] < height[high])
+            {
+                low++;
+            }
+
+            else if(height[high] < height[low])
+            {
+                high--;
+            }
+
+            else
+            {
+                low++;
+                high--;
+            }
+        }
+
+        return maxArea;
+    }
+}
+```
+
 ## Fast and Slow Pointers
 
 ## Sliding Window
