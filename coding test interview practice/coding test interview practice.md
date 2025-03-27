@@ -542,7 +542,81 @@ public class Solution {
     }
 }
 ```
+### Word ladder 
+```
+public class Solution {
+    public bool DoesWordExist(string word, IList<string> wordList)
+    {
+        int start = 0
+        int end = wordList.Count;
 
+        while(start <= end)
+        {
+            if(wordList[start] == word) return true;
+            else if (wordList[end] == word) return true;
+
+            start++;
+            end--;
+        }
+
+        return false;
+    }
+
+    public int FindWordIndex(string word, IList<string> wordList)
+    {
+        int start = 0
+        int end = wordList.Count;
+
+        while(start <= end)
+        {
+            if(wordList[start] == word) return start;
+            else if (wordList[end] == word) return end;
+
+            start++;
+            end--;
+        }
+
+        return -1;
+    }
+
+    public int LadderLength(string beginWord, string endWord, IList<string> wordList) {
+        //does w2 exist in dictionary
+        //loop through the dictionary
+        // the numebr of times I move that will be the ladderLength
+        
+        if(DoesWordExist(endWord, wordList))
+        {
+            int pointer = 0;
+            int wordListLength = wordList.Count;
+            string currentWord = beginWord;
+            int? number = null;
+
+            //find beginWord
+            int index = FindWordIndex(currentWord, wordList);
+
+            if(index == -1)
+            {
+                number = 1
+            }
+
+            while(pointer < wordListLength && currentWord != endWord)
+            {
+                currentWord = wordList[pointer];
+                mumber++;
+                pointer++;
+            }
+
+            return number
+        }
+
+        else
+        {
+            return 0;
+        }
+        
+    }
+}
+```
 ## Fast and Slow Pointers
 
 ## Sliding Window
