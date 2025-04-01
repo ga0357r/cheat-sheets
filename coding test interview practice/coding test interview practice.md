@@ -650,6 +650,9 @@ public class Solution {
 ## Stacks
 
 ## Graphs
+For graph related coding questions, an adjacency list or matrix will be provided. Breadth First Search(BFS) and Depth First Search(DFS) are graph traversal techniques.
+
+In DFS, the strategy is to explore  as far as possible along one path before turning back. Visit all nodes and neighbours marking them as visited  
 
 ## Tree Depth-First Search
 
