@@ -617,6 +617,66 @@ public class Solution {
     }
 }
 ```
+### Largest Unique Substring 
+```
+    private static bool DoesStringExist(string s, List<string> currentCharacters)
+    {
+        foreach (var currentCharacter in currentCharacters)
+        {
+            if (s == currentCharacter) return true;
+        }
+
+        return false;
+    }
+
+    public static int LengthOfLongestSubstring(string s)
+    {
+        // use 2 pointers method
+        int start = 0;
+        int current = start;
+        int end = s.Length - 1;
+        int currentLength = 0;
+        int maxLength = 0;
+        List<string> currentCharacters = new List<string>();
+
+        string startVal = null;
+        string currentVal = null;
+        string endVal = null;
+
+        while (current <= end)
+        {
+            startVal = s[start].ToString();
+            currentVal = s[current].ToString();
+            endVal = s[end].ToString();
+
+            if (current == start)
+            {
+                currentCharacters.Add(startVal);
+                current++;
+                continue;
+            }
+
+            if (!DoesStringExist(currentVal, currentCharacters))
+            {
+                currentCharacters.Add(currentVal);
+                current++;
+            }
+            else
+            {
+                currentLength = currentCharacters.Count;
+                if (maxLength <= currentLength) maxLength = currentLength;
+                currentCharacters.Clear();
+                start++;
+                current = start;
+            }
+        }
+
+        currentLength = currentCharacters.Count;
+        if (maxLength <= currentLength) maxLength = currentLength;
+        return maxLength;
+    }
+```
+
 ## Fast and Slow Pointers
 
 ## Sliding Window
