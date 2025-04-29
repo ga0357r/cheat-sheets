@@ -761,16 +761,198 @@ Recommendation systems: Online streaming services such as Netflix suggest movies
 ### Network Delay Time
 Try to solve the Network Delay Time problem.
 ```
-using System;
-using System.Collections.Generic;
+namespace Grokking_Coding_Interview.Graphs
+{
+    internal static class NetworkDelayTime
+    {
+        internal static int FindMinimumNetworkDelayTime(int[][] times, int n, int k)
+        {
+            //TODO create adjacency dictionary having key as source and List<int[]> as destination and travel time
+            Dictionary<int, List<int[]>> adjacency = new Dictionary<int, List<int[]>>();
+            
+            // Store source as key, and destination and time as values
 
-public class Solution {
-    public static int NetworkDelayTime(int[][] times, int n, int k) {
+            foreach (int[] time in times)
+            {
+                int source = time[0];
+                int destination = time[1];
+                int travelTime  = time[2];
 
-        // Replace this placeholder return statement with your code    
-        return -1;
+                if(!adjacency.ContainsKey(source)) adjacency[source] = new List<int[]>();
+                adjacency[source].Add(new int[] { destination, travelTime });
+
+            }
+            //Print the adjacency dictionary
+            PrintAdjacency(adjacency);
+
+            //TODO create a proiority queue to store the delay time and the node.
+            //TODO create a visited set to keep track of nodes that have been visited
+            PriorityQueue<int[]> pq = new PriorityQueue<int[]>(Comparer<int[]>.Create((a, b) => a[0].CompareTo(b[0])));
+            pq.Offer(new int[] { 0, k });
+            HashSet<int> visited = new HashSet<int>();
+
+            int delays = 0;
+
+            while (pq.Count() > 0)
+            {
+                int[] current = pq.Poll();
+                int time = current[0];
+                int node = current[1];
+
+                Console.WriteLine("\t Retrieved time: " + time);
+                Console.WriteLine("\t Retrieved node: " + node);
+
+                if (visited.Contains(node)) continue;
+
+                visited.Add(node);
+                delays = Math.Max(delays, time);
+                List<int[]> neighbors;
+                if(!adjacency.TryGetValue(node, out neighbors)) neighbors = new List<int[]>();
+
+                PrintNeighbors(neighbors);
+
+                foreach (int[] neighbor in neighbors)
+                {
+                    int neighbourNode = neighbor[0];
+                    int neighbourTime = neighbor[1];
+
+                    if (!visited.Contains(neighbourNode))
+                    {
+                        int newTime = time + neighbourTime;
+                        pq.Offer(new int[] { newTime, neighbourNode });
+                    }
+                }
+
+            }
+
+            if (visited.Count == n) return delays;
+            return -1;
+        }
+
+        private static void PrintAdjacency(Dictionary<int, List<int[]>> adjacency)
+        {
+            Console.WriteLine("\t Adjacency dictionary: {");
+            bool isFirst = true;
+
+            foreach (var entry in adjacency)
+            {
+                if(!isFirst) Console.Write(", ");
+                int source = entry.Key;
+                List<int[]> destinations = entry.Value;
+                Console.Write(source + ": [");
+
+                for (int i = 0; i < destinations.Count; i++)
+                {
+                    int[] destination = destinations[i];
+                    Console.Write("(" + destination[0] + ", " + destination[1] + ")");
+                    if (i < destinations.Count - 1) Console.Write(", ");
+                }
+
+                Console.Write("]");
+                isFirst = false;
+            }
+            Console.WriteLine("}");
+        }
+
+        private static void PrintNeighbors(List<int[]> neighbors)
+        {
+            Console.Write("\t Neighbors: [");
+            for (int i = 0; i < neighbors.Count; i++)
+            {
+                int[] neighbor = neighbors[i];
+                Console.Write("(" + neighbor[0] + ", " + neighbor[1] + ")");
+                if (i < neighbors.Count - 1)
+                {
+                    Console.Write(", ");
+                }
+            }
+            Console.WriteLine("]");
+        }
     }
 }
+```
+
+### Custom Priority Queue
+```
+namespace Grokking_Coding_Interview
+{
+    internal class PriorityQueue<T>
+    {
+        private List<T> heap;
+        private IComparer<T> comparer;
+
+        public PriorityQueue(IComparer<T> comparer)
+        {
+            heap = new List<T>();
+            this.comparer = comparer;
+        }
+
+        /// <summary>
+        /// Acts as a min heap - a tree that will always have 2 children 
+        /// </summary>
+        /// <param name="item"></param>
+        public void Offer(T item)
+        {
+            heap.Add(item);
+            int i = heap.Count - 1;
+
+            while (i > 0)
+            {
+                int parent = (i - 1) / 2;
+                if (comparer.Compare(heap[parent], heap[i]) <= 0) break;
+                Swap(i, parent);
+                i = parent;
+            }
+        }
+
+        public T Poll()
+        {
+            if(heap.Count == 0) throw new InvalidOperationException("Priority Queue is empty");
+            T result = heap[0];
+            int last = heap.Count - 1;
+            heap[0] = heap[last];
+            heap.RemoveAt(last);
+
+            int i = 0;
+
+            while(true)
+            {
+                int leftChild = 2 * i + 1;
+                if (leftChild >= heap.Count) break;
+
+                int rightChild = 2 * i + 2;
+                int minChild = (rightChild < heap.Count && comparer.Compare(heap[rightChild], heap[leftChild]) < 0) ? rightChild : leftChild;
+
+                if (comparer.Compare(heap[i], heap[minChild]) <= 0) break;
+
+                Swap(i, minChild);
+                i = minChild;
+            }
+
+            return result;
+        }
+
+        public int Count()
+        {
+            return heap.Count;
+        }
+
+        private void Swap(int i, int j)
+        {
+            T temp = heap[i];
+            heap[i] = heap[j];
+            heap[j] = temp;
+        }
+    }
+}
+
+```
+
+### Paths in Maze That Lead to Same Room
+Try to solve the Paths in Maze That Lead to Same Room problem.
+
+```
+
 ```
 
 ## Tree Depth-First Search
