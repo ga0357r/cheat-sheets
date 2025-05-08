@@ -680,6 +680,26 @@ public class Solution {
 ## Fast and Slow Pointers
 
 ## Sliding Window
+### Reverse a LinkedList
+```
+public ListNode ReverseList(ListNode head) 
+    {
+        ListNode high = head;
+        ListNode mid = null;
+        ListNode low = null;
+
+        while(high != null)
+        {
+            low = mid;
+            mid = high;
+            high = high.next;
+            mid.next = low;
+        }
+
+        high = mid;
+        return high;
+    }
+```
 
 ## Merge Intervals
 
@@ -952,7 +972,59 @@ namespace Grokking_Coding_Interview
 Try to solve the Paths in Maze That Lead to Same Room problem.
 
 ```
+public static int NumberOfPaths(int n, int[][] corridors)
+{
+    //TODO Create an adjacency matrix to store the rooms as keys and its neighbor rooms as the corresponding values. Create a counter to store the number of cycles.
+    Dictionary<int, HashSet<int>> adjacencyDictionary = new Dictionary<int, HashSet<int>>();
+    int cycles = 0;
+    //TODO Start iterating over corridors, and store the neighbors of room1 and room2 in the matrix.
 
+    foreach (int[] corridor in corridors)
+    {
+        int room1 = corridor[0];
+        int room2 = corridor[1];
+
+        if (!adjacencyDictionary.ContainsKey(room1))
+        {
+            adjacencyDictionary.Add(room1, new HashSet<int>());
+            adjacencyDictionary[room1].Add(room2);
+        }
+
+        else
+        {
+            adjacencyDictionary[room1].Add(room2);
+        }
+
+        if (!adjacencyDictionary.ContainsKey(room2))
+        {
+            adjacencyDictionary.Add(room2, new HashSet<int>());
+            adjacencyDictionary[room2].Add(room1);
+        }
+
+        else
+        {
+            adjacencyDictionary[room2].Add(room1);
+        }
+
+        //TODO Take the intersection of the neighbors of room1 and room2 and add the length of the result to the counter. What does this mean?
+        int intersections = FindIntersections(adjacencyDictionary[room1], adjacencyDictionary[room2]);
+        cycles += intersections;
+    }
+
+    //TODO Repeat this process until we have iterated over all corridors.
+    return cycles;
+}
+
+private static int FindIntersections(HashSet<int> firstSet, HashSet<int> secondSet)
+{
+    int intersections = 0;
+    foreach (int number in firstSet)
+    {
+        if (secondSet.Contains(number)) intersections++;
+    }
+
+    return intersections;
+}
 ```
 
 ## Tree Depth-First Search
