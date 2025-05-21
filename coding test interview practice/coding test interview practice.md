@@ -1027,6 +1027,51 @@ private static int FindIntersections(HashSet<int> firstSet, HashSet<int> secondS
 }
 ```
 
+### Clone Graph
+Try to solve the Clone Graph problem.
+
+```
+public static Node CloneHelper(Node root, Dictionary<Node,Node> nodesCompleted)
+  {
+    if(root == null)
+    {
+      return null;
+    }
+    
+    Node clonedNode = new Node(root.data);
+    nodesCompleted[root] = clonedNode;
+    
+    foreach(Node p in root.neighbors)
+    {
+      Node x;
+      
+      if(nodesCompleted.TryGetValue(p, out x))
+      {
+        clonedNode.neighbors.Add(x);
+      }
+      else
+      {
+        clonedNode.neighbors.Add(CloneHelper(p, nodesCompleted));
+      }
+    }
+    
+    return clonedNode;
+  }
+  
+  public static Node Clone(Node root) 
+  {
+    Dictionary<Node, Node> nodesCompleted = new Dictionary<Node, Node>();
+    return CloneHelper(root, nodesCompleted);
+  }
+```
+
+## Graph Valid Tree
+Try to solve the Graph Valid Tree problem.
+
+```
+
+```
+
 ## Tree Depth-First Search
 
 ## Tree Breadth-First Search
