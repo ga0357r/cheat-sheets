@@ -23,6 +23,7 @@ First, find the path to Unity's SmartMerge tool on your system. The location dep
 Open your terminal or command prompt, navigate to your Unity project directory, and run the following Git commands:
 
 ```bash
+# using the git bash terminal
 # navigate to unity project directory for example "cd C:\Users\ayode\Documents\Repos\GitHub\evon-ddt-game-template\evon-ddt-client"
 cd <path-to-project-directory>
 
@@ -31,9 +32,9 @@ git config merge.tool unityyamlmerge
 
 # Configure the unityyamlmerge tool
 git config mergetool.unityyamlmerge.trustExitCode false
-git config mergetool.unityyamlmerge.cmd ' "<path-to-unity>/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p \"\$BASE\" \"\$REMOTE\" \"\$LOCAL\" \"\$MERGED\""
 
-git config mergetool.unityyamlmerge.cmd ' "<path-to-unity>\Editor\Data\Tools\UnityYAMLMerge.exe"  merge -p "$BASE" "$REMOTE" "$LOCAL" "$MERGED" '
+## for windows
+git config mergetool.unityyamlmerge.cmd "\"C:/Program Files/Unity/Hub/Editor/2022.3.10f1/Editor/Data/Tools/UnityYAMLMerge.exe\" merge -p \\\"\$BASE\\\" \\\"\$REMOTE\\\" \\\"\$LOCAL\\\" \\\"\$MERGED\\\""
 ```
 
 Replace `<path-to-unity>` with the actual path to your Unity installation. For example, on Windows, it might look like this:
