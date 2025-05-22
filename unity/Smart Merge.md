@@ -34,13 +34,13 @@ git config merge.tool unityyamlmerge
 git config mergetool.unityyamlmerge.trustExitCode false
 
 ## for windows
-git config mergetool.unityyamlmerge.cmd "\"C:/Program Files/Unity/Hub/Editor/2022.3.10f1/Editor/Data/Tools/UnityYAMLMerge.exe\" merge -p \\\"\$BASE\\\" \\\"\$REMOTE\\\" \\\"\$LOCAL\\\" \\\"\$MERGED\\\""
+git config mergetool.unityyamlmerge.cmd "\"<path-to-unity-version>/Editor/Data/Tools/UnityYAMLMerge.exe\" merge -p \\\"\$BASE\\\" \\\"\$REMOTE\\\" \\\"\$LOCAL\\\" \\\"\$MERGED\\\""
 ```
 
-Replace `<path-to-unity>` with the actual path to your Unity installation. For example, on Windows, it might look like this:
+Replace `<path-to-unity-version>` with the actual path to your Unity installation. For example, on Windows, it might look like this:
 
 ```bash
-git config mergetool.unityyamlmerge.cmd ' "C:\Program Files\Unity\Hub\Editor\2022.3.23f1\Editor\Data\Tools\UnityYAMLMerge.exe"  merge -p "$BASE" "$REMOTE" "$LOCAL" "$MERGED" '
+git config mergetool.unityyamlmerge.cmd "\"C:/Program Files/Unity/Hub/Editor/2022.3.10f1/Editor/Data/Tools/UnityYAMLMerge.exe\" merge -p \\\"\$BASE\\\" \\\"\$REMOTE\\\" \\\"\$LOCAL\\\" \\\"\$MERGED\\\""
 ```
 
 ### 3. Verify the Configuration
