@@ -1069,7 +1069,96 @@ public static Node CloneHelper(Node root, Dictionary<Node,Node> nodesCompleted)
 Try to solve the Graph Valid Tree problem.
 
 ```
+using System;
+using System.Collections.Generic;
 
+public class Solution 
+{
+    public static bool IsGraphAValidTree(int n, int[][] edges) 
+    {
+        
+        // Replace this placeholder return statement with your code
+        /*
+            n = 4
+            edges = [[0,1],[1,2],[0,2]
+        */
+        if(edges.Length != n-1) return false;
+        
+
+        //need adjacency list
+        Dictionary<int, HashSet<int>> adjacencyList= new();
+        //need a set to track nodes
+        HashSet<int> visitedNodes = new();
+        
+        //fill the adjacency list
+        foreach(int[] connection in edges)
+        {
+            int node1 = connection[0];
+            int node2 = connection[1];
+            
+            if(!adjacencyList.ContainsKey(node1))
+            {
+                adjacencyList.Add(node1, new());
+                adjacencyList[node1].Add(node2);
+            }
+            
+            else
+            {
+                adjacencyList[node1].Add(node2);
+            }
+            
+            if(!adjacencyList.ContainsKey(node2))
+            {
+                adjacencyList.Add(node2, new());
+                adjacencyList[node2].Add(node1);
+            }
+            else
+            {
+                adjacencyList[node2].Add(node1);
+            }
+        }
+        
+        //Adjacency List looks like this
+        /*
+        0: 1
+        1: 0, 2
+        2: 1
+        3: 
+        */
+        PrintAdjacencyList(adjacencyList);
+            
+        //need a stack
+        Stack<int> stack = new();
+        // TODO if all nodes are connected and
+        // TODO if no cycle between them return true
+        return false;
+    }
+    
+    private static void PrintAdjacencyList(Dictionary<int, HashSet<int>> adjacencyList)
+    {
+        foreach(var kvp in adjacencyList)
+        {
+            var key = kvp.Key;
+            var values = GetHashSetValues(kvp.Value);
+            Console.WriteLine($"key :{key} contains {values}");
+        }
+    }
+    
+    private static string GetHashSetValues(HashSet<int> hashset)
+    {
+        string output = "";
+        bool first = true;
+        
+        foreach(var value in hashset)
+        {
+             if(!first) output += ", ";
+             first = false;
+             output += $"{value}";
+        }
+        
+        return output;
+    }
+}
 ```
 
 ## Tree Depth-First Search
