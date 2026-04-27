@@ -1,0 +1,53 @@
+Windows Subsystem For Linux (WSL) Guide
+What is WSL?
+The Windows Subsystem for Linux (WSL) is a feature of Windows that allows developers to run a GNU/Linux environment—including most command-line tools, utilities, and applications—directly on Windows, unmodified, without the overhead of a traditional virtual machine or dual-boot setup.
+
+How to Install a Linux Distro
+To install the default distribution (usually Ubuntu), open PowerShell or Command Prompt as Administrator and run:
+wsl --install
+
+To see other available distributions, use:
+wsl --list --online
+
+How to Install a Desktop Environment (DE)
+Since WSL is terminal-based by default, you can use Tasksel to quickly install a full desktop interface (like XFCE, GNOME, or KDE).
+
+Update your package list:
+
+Bash
+sudo apt update && sudo apt upgrade -y
+Install Tasksel:
+
+Bash
+sudo apt install tasksel
+Run Tasksel to choose your DE:
+
+Bash
+sudo tasksel
+Space: Select/Deselect an item.
+
+Tab: Move to the "OK" button.
+
+Enter: Confirm and start the installation.
+
+Accessing the Desktop via Remote Desktop (RDP)
+1. Install the Remote Desktop Server
+You need a way to "beam" the desktop from Linux to Windows. xrdp is the most common tool for this.
+
+Bash
+sudo apt install xrdp
+sudo systemctl enable xrdp
+sudo systemctl start xrdp
+2. Get your WSL IP Address
+Find the internal IP address assigned to your Linux instance:
+
+Bash
+ip -br a
+Note: Look for the address under eth0 (usually starts with 172.x.x.x).
+
+3. Connect from Windows
+Open the Remote Desktop Connection app on Windows.
+
+Paste the IP address you found in the previous step.
+
+Click Connect, enter your Linux username and password, and enjoy your Linux Desktop!
