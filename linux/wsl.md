@@ -208,3 +208,36 @@ Then:
 
 ---
 
+
+
+# 🐙 GitHub Setup in Debian (WSL)
+
+A quick guide to setting up GitHub in your Debian WSL terminal.
+
+---
+
+## 📦 1. Install cpp & cmake toolchain on debian
+
+Open your Debian WSL terminal:
+
+install cmake:
+
+```bash
+sudo apt update
+sudo apt install cmake -y
+```
+
+install c++ compiler by installing build essential to give you g++(C++ compiler), gcc(c compiler), make and other required tools
+
+```bash
+sudo apt install build-essential -y
+```
+
+Check it worked:
+
+```bash
+cmake --version
+g++ --version
+```
+
+---
