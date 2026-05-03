@@ -123,12 +123,86 @@ wsl --shutdown
 
 ---
 
-## 📄 License
+# 🐙 GitHub Setup in Debian (WSL)
 
-This project is licensed under the MIT License.
+A quick guide to setting up GitHub in your Debian WSL terminal.
 
 ---
 
-## 🙌 Contributions
+## 📦 1. Install Git
 
-Feel free to fork this repo and improve the guide!
+Open your Debian WSL terminal:
+
+```bash
+sudo apt update
+sudo apt install git -y
+```
+
+Check it worked:
+
+```bash
+git --version
+```
+
+---
+
+## 👤 2. Configure Your Identity
+
+Set your GitHub username and email (must match your GitHub account):
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+```
+
+Verify:
+
+```bash
+git config --list
+```
+
+---
+
+## 🔐 3. Set Up SSH (Recommended)
+
+This lets you connect to GitHub without typing your password every time.
+
+### Generate SSH key:
+
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+Press `Enter` through prompts.
+
+### Start SSH agent:
+
+```bash
+eval "$(ssh-agent -s)"
+```
+
+### Add your key:
+
+```bash
+ssh-add ~/.ssh/id_ed25519
+```
+
+---
+
+## 📋 4. Add SSH Key to GitHub
+
+Copy your key:
+
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+Then:
+
+1. Go to GitHub
+2. Navigate to **Settings → SSH and GPG keys**
+3. Click **New SSH key**
+4. Paste your key
+
+---
+
