@@ -10,6 +10,7 @@ adb tcpip 5555                  # Restart adbd listening on TCP port
 adb kill-server                 # Kill the adb server
 adb start-server                # Start the adb server
 adb -s <device_id> <command>    # Target a specific device (when multiple attached)
+adb pair <ip>:5555              # Pair with a specific device
 ```
 
 ## App Installation & Management
